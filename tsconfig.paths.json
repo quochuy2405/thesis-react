@@ -14,7 +14,7 @@
 			"@/providers/*": ["providers/*"],
 			"@/stores/*": ["stores/*"],
 			"@/resolvers/*": ["resolvers/*"],
-			"@/apis/*": ["@/apis/*"],
+			"@/apis/*": ["apis/*"],
 			"@/redux/*": ["redux/*"],
 			"@/layouts/*": ["layouts/*"]
 		}
