@@ -5,6 +5,7 @@ import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
 import clsx from "clsx";
 import { BiPlus } from "react-icons/bi";
+import { BsPlus } from "react-icons/bs";
 
 const getBase64 = (file: RcFile): Promise<string> =>
 	new Promise((resolve, reject) => {
@@ -38,8 +39,10 @@ const UploadFaces: React.FC<UploadFacesProps> = ({ hidden }) => {
 		setFileList(newFileList);
 
 	const uploadButton = (
-		<div>
-			<BiPlus />
+		<div className="flex items-center justify-center flex-col gap-1">
+			<div>
+				<BsPlus size={20} />
+			</div>
 			<p className='font-medium text-neutral-600 text-[10px]' style={{ marginTop: 8 }}>
 				Drop face
 			</p>

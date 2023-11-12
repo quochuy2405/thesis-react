@@ -5,3 +5,5 @@ export { default as Private} from "./Private";
 export { default as SearchAI} from "./SearchAI";
 export { default as Social} from "./Social";
 export { default as Trash} from "./Trash";
+export { default as Sign} from "./Sign";
+export { default as GetStated} from "./GetStated";

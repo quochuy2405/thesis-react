@@ -17,7 +17,7 @@ const WelcomeSlide = () => {
 			key={4}
 			href="/thesis"
 			type="primary"
-			className="text-emerald-500 bg-white h-40 w-40 rounded-full hover:!bg-white hover:!text-emerald-500 hover:!ring-emerald-500 hover:ring-2 text-lg font-bold mt-6 hover:scale-95 flex items-center justify-center">
+			className="text-emerald-500 bg-white h-20 w-40 rounded-full hover:!bg-white hover:!text-emerald-500 hover:!ring-emerald-500 hover:ring-2 text-lg font-bold mt-6 hover:scale-95 flex items-center justify-center">
 			{"Let's go"}
 		</Button>,
 	];

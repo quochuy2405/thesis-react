@@ -1,46 +1,68 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import AuthLayout from './layouts/auth';
 import LayoutMain from './layouts/main';
-import { Analysis, Error, Manage, Private, SearchAI, Social, Trash } from './pages';
+import { Analysis, Error, GetStated, Manage, Private, SearchAI, Sign, Social, Trash } from './pages';
 import './styles/global.css';
 const router = createBrowserRouter([
 	{
 		path: "",
-		element: <LayoutMain />,
+		element: <AuthLayout />,
 		errorElement: <Error />,
 		children: [
 			{
-				path: "/analysis",
-				element: <Analysis />,
+				path: "/",
+				element: <Sign />,
 				errorElement: <Error />,
 			},
 			{
-				path: "/manage",
-				element: <Manage />,
+				path: "/get-started",
+				element: <GetStated />,
 				errorElement: <Error />,
 			},
 			{
-				path: "/private",
-				element: <Private />,
+				path: "/thesis",
+				element: <LayoutMain />,
 				errorElement: <Error />,
+				children: [
+					{
+						path: "/thesis/analysis",
+						element: <Analysis />,
+						errorElement: <Error />,
+					},
+					{
+						path: "/thesis/manage",
+						element: <Manage />,
+						errorElement: <Error />,
+					},
+					{
+						path: "/thesis",
+						element: <Manage />,
+						errorElement: <Error />,
+					},
+					{
+						path: "/thesis/private",
+						element: <Private />,
+						errorElement: <Error />,
+					},
+					{
+						path: "/thesis/search",
+						element: <SearchAI />,
+						// errorElement: <Error />,
+					},
+					{
+						path: "/thesis/social",
+						element: <Social />,
+						errorElement: <Error />,
+					},
+					{
+						path: "/thesis/trash",
+						element: <Trash />,
+						errorElement: <Error />,
+					},
+				],
 			},
-			{
-				path: "/search",
-				element: <SearchAI />,
-				// errorElement: <Error />,
-			},
-			{
-				path: "/social",
-				element: <Social />,
-				errorElement: <Error />,
-			},
-			{
-				path: "/trash",
-				element: <Trash />,
-				errorElement: <Error />,
-			},
-		
 		],
 	},
 ]);

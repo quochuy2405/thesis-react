@@ -21,7 +21,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onChangeForm }) => {
 						className='text-xs font-semibold w-full text-right text-black/70 hover:text-emerald-500'>
 						Recover Password?
 					</NavLink>
-					<Button href='/get-started' type='primary' className='bg-emerald-500 button-form mt-6'>
+					<Button href='/get-started' type='primary' className='bg-emerald-500 flex items-center justify-center button-form mt-6'>
 						Sign in
 					</Button>
 					<span className='text-xs font-semibold text-center text-black/70 h-10'>

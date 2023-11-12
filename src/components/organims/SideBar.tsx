@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Layout, Menu } from "antd";
 import { BiSolidCategory } from "react-icons/bi";
@@ -6,86 +7,83 @@ import { HiMiniFolder } from "react-icons/hi2";
 import { IoMdLogOut } from "react-icons/io";
 import { IoAnalytics, IoSearch } from "react-icons/io5";
 import { TbLockSquareRoundedFilled } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SideBar = () => {
 	const navigate  = useNavigate();
 	// const params = useSearchParams();
+	const location = useLocation();
+	console.log("localtion.pathname", location.pathname);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const items: any = [
 		{
-			key: "null",
+			key: "/thesis",
 			icon: <BiSolidCategory size={18} />,
 			label: "All",
 			onClick: () => {
-				navigate ("/");
+				navigate("/thesis");
 			},
 		},
 		{
-			key: "search",
+			key: "/thesis/search",
 			icon: <IoSearch size={18} />,
 			label: "Search AI",
 			onClick: () => {
-				navigate ("/search");
+				navigate("/thesis/search");
 			},
 		},
 		{
-			key: "manage",
+			key: "/thesis/manage",
 			icon: <HiMiniFolder size={18} />,
 			label: "Folder manager",
 			onClick: () => {
-				navigate ("/manage");
+				navigate("/thesis/manage");
 			},
 		},
 		{
-			key: "private",
+			key: "/thesis/private",
 			icon: <TbLockSquareRoundedFilled size={18} />,
 			label: "Private",
 			onClick: () => {
-				navigate ("/private");
+				navigate("/thesis/private");
 			},
 		},
 		{
-			key: "trash",
+			key: "/thesis/trash",
 			icon: <FaTrash size={14} />,
 			label: "Trash",
 			onClick: () => {
-				navigate ("/trash");
+				navigate("/thesis/trash");
 			},
 		},
 		{
-			key: "analysis",
+			key: "/thesis/analysis",
 			icon: <IoAnalytics size={14} />,
 			label: "Analysis",
 			onClick: () => {
-				navigate ("/analysis");
+				navigate("/thesis/analysis");
 			},
 		},
 	];
 	return (
-		<Layout.Sider
-			collapsedWidth={60}
-			trigger={null}
-			collapsible
-			collapsed={true}>
-			<div className="flex flex-col h-full pb-10 w-full !bg-emerald-400">
-				<div className="h-10 w-full rounded-lg text-white flex items-center justify-center font-extrabold uppercase">
-					Thesis
+		<Layout.Sider collapsedWidth={60} trigger={null} collapsible collapsed={true}>
+			<div className='flex flex-col h-full pb-10 w-full !bg-emerald-400'>
+				<div className='h-10 w-full rounded-lg text-white flex items-center justify-center font-extrabold uppercase'>
+					Thesis/
 				</div>
 
 				<Menu
-					className="flex-1 flex gap-2 flex-col w-full justify-center items-center !text-white !bg-emerald-400"
-					mode="inline"
-					defaultSelectedKeys={['1'
-						// items.find((item: any) => item.key === params.get("tab"))?.key ||
-						// 	items[0].key,
+					className='flex-1 flex gap-2 flex-col w-full justify-center items-center !text-white !bg-emerald-400'
+					mode='inline'
+					defaultSelectedKeys={[
+						items.find((item: any) => location.pathname===item.key)?.key || items[0].key,
 					]}
 					items={items}
 				/>
 
 				<Menu
-					className="flex gap-2 flex-col w-full justify-center items-center !text-white !bg-emerald-400"
-					mode="inline"
+					className='flex gap-2 flex-col w-full justify-center items-center !text-white !bg-emerald-400'
+					mode='inline'
 					items={[
 						{
 							key: "0",
