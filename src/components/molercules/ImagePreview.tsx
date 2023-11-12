@@ -42,11 +42,10 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 								if (!value) onClose();
 								else onClick(data);
 							},
-							
 						}}
 						alt=''
-						className='!rounded-md'
-						src='https://media.macphun.com/img/uploads/customer/how-to/608/15542038745ca344e267fb80.28757312.jpg?q=85&w=1340'
+						className='!rounded-md !h-[400px] !w-[300px]'
+						src={`https://picsum.photos/800/900`}
 					/>
 				</Watermark>
 

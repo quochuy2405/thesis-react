@@ -127,19 +127,24 @@
 }
 
 *::-webkit-scrollbar {
-  width: 2px;
+	width: 2px;
 }
- 
+
 *::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+	box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
 }
- 
+
 *::-webkit-scrollbar-thumb {
-  background-color: rgb(215, 215, 215);
+	background-color: rgb(215, 215, 215);
 }
-.ant-upload-list.ant-upload-list-picture-circle{
-display: flex !important;
+.ant-upload-list.ant-upload-list-picture-circle {
+	display: flex !important;
 }
-.ant-modal-content{
-border-radius: 10px !important;
+.ant-modal-content {
+	border-radius: 10px !important;
+}
+
+.node-text tspan{
+	fill: white !important;
+	opacity: 1;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UploadFile } from "antd";
 import clsx from "clsx";
 import React from "react";

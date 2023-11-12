@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { getImageByFaces } from "@/apis/face";
+import { getImageAll, getImageByTagsContains, getImageByTagsMatchAll } from "@/apis/get_image";
 import { InputTag } from "@/components/atoms";
 import { HeaderSearch, LoadFacesExisted, UploadFaces, UploadFiles } from "@/components/molercules";
 import { PreviewImages } from "@/components/organims";
 import { Button, Form, FormInstance, Segmented, Space, Spin, Switch } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { SegmentedValue } from "antd/es/segmented";
-import { getImageByFaces } from "@/apis/face";
-import { getImageAll, getImageByTagsContains, getImageByTagsMatchAll } from "@/apis/get_image";
 import React, { useEffect, useState } from "react";
 
 import { BsTranslate } from "react-icons/bs";
@@ -68,7 +68,9 @@ const Page = () => {
 				break;
 			}
 			case "face": {
-				if (methods.faceUpload) { /* empty */ } else {
+				if (methods.faceUpload) {
+					/* empty */
+				} else {
 					await getImageByFaces("1")
 						.then((res) => {
 							const data = res.data;
@@ -86,7 +88,6 @@ const Page = () => {
 						});
 				}
 			}
-		
 		}
 	};
 	const onChangeTags = (values: Array<string>) => {
@@ -192,7 +193,7 @@ const Page = () => {
 						]}
 					/>
 				</Space>
-				<div className='flex items-center justify-start gap-4 p-4 h-40'>
+				<div className='flex items-center justify-start gap-4 p-4 min-h-[240px]'>
 					<Form
 						ref={formRef}
 						name='control-ref'
@@ -225,8 +226,12 @@ const Page = () => {
 							</Form.Item>
 						)}
 						{searchType === "face" && (
-							<Form.Item className='!mb-0  py-4' name='face' label='' rules={[{ required: false }]}>
-								<div className='min-w-[400px] flex flex-col gap-2'>
+							<Form.Item
+								className='!mb-0  h-fit py-4'
+								name='face'
+								label=''
+								rules={[{ required: false }]}>
+								<div className='min-w-[400px]  h-fit flex flex-col gap-2'>
 									<div className='flex gap-2 items-center'>
 										<h3 className='text-xs uppercase text-black/50'>Faces Existed</h3>
 										<Switch
@@ -235,8 +240,14 @@ const Page = () => {
 											onChange={onChangeFace}
 										/>
 									</div>
-									<div className='h-[100px]'>
-										<LoadFacesExisted hidden={!methods?.faceExisted} />
+									<div className='min-h-[100px] h-fit'>
+										<LoadFacesExisted
+											hidden={!methods?.faceExisted}
+											active={methods?.face}
+											onActive={(name) => {
+												setMethods((curr:any) => ({ ...curr, face: name }));
+											}}
+										/>
 										<UploadFaces hidden={!!methods?.faceExisted} />
 									</div>
 								</div>

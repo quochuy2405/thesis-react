@@ -1,10 +1,9 @@
 
-import React, { useState } from "react";
 import { Modal, Upload } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
 import clsx from "clsx";
-import { BiPlus } from "react-icons/bi";
+import React, { useState } from "react";
 import { BsPlus } from "react-icons/bs";
 
 const getBase64 = (file: RcFile): Promise<string> =>
@@ -20,7 +19,7 @@ interface UploadFacesProps {
 const UploadFaces: React.FC<UploadFacesProps> = ({ hidden }) => {
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState("");
-	const [previewTitle, setPreviewTitle] = useState("");
+	// const [ setPreviewTitle] = useState("");
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
 
 	const handleCancel = () => setPreviewOpen(false);
@@ -32,7 +31,7 @@ const UploadFaces: React.FC<UploadFacesProps> = ({ hidden }) => {
 
 		setPreviewImage(file.url || (file.preview as string));
 		setPreviewOpen(true);
-		setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1));
+		// setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1));
 	};
 
 	const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>

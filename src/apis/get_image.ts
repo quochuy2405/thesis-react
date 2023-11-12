@@ -11,3 +11,6 @@ export const getImageAll = async (uid: string) => {
 	return await unauth().get(`/photo/${uid}`);
 };
 
+export const getCroppedPhoto = async (uid: string) => {
+	return await unauth().get(`/cropped-photo/${uid}`);
+};

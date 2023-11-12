@@ -1,4 +1,3 @@
-'use client'
 import { ImageType } from "@/types/image";
 import { Button, Col, Drawer, Row, Spin } from "antd";
 import React, { useState } from "react";
@@ -18,7 +17,7 @@ const DrawerSimilar: React.FC<DrawerSimilarProps> = ({
 	onPickNewImage,
 }) => {
 	const [loading, setLoading] = useState(false);
-	const [data, setData] = useState<Array<ImageType>>([]);
+	const [data] = useState<Array<ImageType>>([]);
 	const handleSimilarImages = async () => {
 		setLoading(false);
 		
