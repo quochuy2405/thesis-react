@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const WelcomeSlide = () => {
 	const [fadeIn, setFadeIn] = useState(true);
 	const [script, setScript] = useState(0);
-	let time: NodeJS.Timeout | string = "";
+	let time: unknown| string = "";
 	const initScript = [
 		<p key={1}>Welcome to Thesis</p>,
 		<p key={2}>{"Let's manage folder with something."}</p>,
@@ -40,7 +40,7 @@ const WelcomeSlide = () => {
 			}, 300);
 		});
 		return () => {
-			time && clearTimeout(time);
+			time && clearTimeout(time as number);
 		};
 	}, [script]);
 	return (

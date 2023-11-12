@@ -1,5 +1,4 @@
 import { Button } from "antd";
-import Link from "next/link";
 import { TextField, TextFieldPassword } from "../atoms";
 interface RegisterFormProps {
 	onChangeForm: (type: "login" | "register") => void;
