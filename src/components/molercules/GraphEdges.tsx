@@ -68,22 +68,23 @@ const GraphEdges = () => {
 				const y = centerY + radius * Math.sin(angle);
 				const isNode = item.node.includes("crop");
 				const keyNode = isNode ? "nodemain" : "noderelated";
+				const typeText = isNode ? "Faces" : "Related iamge";
 
 				const url = isNode
-					? "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg"
-					: "https://cdn.vox-cdn.com/thumbor/MbYxeyxG82sFlibdnv9Br1aCLg8=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/24395697/bkq6gtrpcnw43vsm5zm62q3z.png";
+					? "https://images.pexels.com/photos/2380794/pexels-photo-2380794.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+					: "https://images.pexels.com/photos/19045568/pexels-photo-19045568/free-photo-of-a-group-of-young-people-posing-together-for-a-picture-in-the-garden.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
 				NodeTypes = {
 					...NodeTypes,
 					[keyNode + index]: {
-						typeText: "Face Detect ",
+						typeText,
 						shapeId: `#${keyNode}${index}`,
 						shape: (
 							// <svg id='nodecrop' viewBox='0 0 160 40' xmlns='http://www.w3.org/2000/svg'>
 							<symbol viewBox='0 0 30 30' id={keyNode + index} key={index}>
 								<defs>
 									<clipPath id={`circleClip${index}`}>
-										<circle cx='15' cy='15' r={isNode?"18":'15'} />
+										<circle cx='15' cy='15' r={isNode?"15":'18'} />
 									</clipPath>
 								</defs>
 								<image
