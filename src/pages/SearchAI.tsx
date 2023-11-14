@@ -31,9 +31,6 @@ const Page = () => {
 	const dispatch = useDispatch();
 
 	const onSubmit = async (data: any) => {
-		if (searchType !== "face" && showGraph) {
-			dispatch(closeGraphEdges());
-		}
 		switch (searchType) {
 			case "tag": {
 				if (!data?.tags?.length) return;
@@ -146,6 +143,9 @@ const Page = () => {
 
 	useEffect(() => {
 		setData([]);
+		if (searchType !== "face" && showGraph) {
+			dispatch(closeGraphEdges());
+		}
 		if (searchType === "annoy") {
 			setLoading(true);
 			getImageAll("1")

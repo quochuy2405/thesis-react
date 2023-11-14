@@ -32,7 +32,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 			));
 	}, [data.tag]);
 	return (
-		<div className='w-full h-fit p-3 flex flex-col hover:bg-neutral-50 rounded-md cursor-pointer relative'>
+		<div className='w-full h-fit p-1 flex flex-col hover:bg-neutral-50 rounded-md cursor-pointer relative'>
 			<div className='w-full h-fit relative image-preview'>
 				<Watermark content='Thesis'>
 					<Image
@@ -44,7 +44,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 							},
 						}}
 						alt=''
-						className='!rounded-md !h-[400px] !min-w-[270px]'
+						className='!rounded-md !h-[400px] w-full'
 						src={`https://picsum.photos/800/900`}
 					/>
 				</Watermark>

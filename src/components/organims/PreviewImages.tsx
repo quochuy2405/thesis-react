@@ -35,14 +35,14 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 	return (
 		<div className='flex flex-1 justify-center w-full '>
 			<div className='flex flex-col w-full'>
-				<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+				<Row gutter={{ xs: 8, sm: 10, md: 10, lg: 10 }} wrap>
 					{!data.length && (
 						<div className='h-full w-full flex items-center justify-center'>
 							<Empty />
 						</div>
 					)}
 					{data.map((item) => (
-						<Col className='gutter-row' span={6} key={JSON.stringify(item)}>
+						<Col className='gutter-row min-w-[270px] m-auto' span={6} key={JSON.stringify(item)} >
 							<ImagePreview
 								data={item}
 								onClick={(data) => {

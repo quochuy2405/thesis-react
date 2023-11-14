@@ -36,7 +36,7 @@ const PostItem = () => {
 	};
 
 	return (
-		<div className='flex flex-col gap-4 max-w-lg w-[440px] m-auto'>
+		<div className='flex flex-col gap-4 max-w-lg w-[540px] m-auto'>
 			<div className='flex'>
 				<div className='flex items-center flex-1 gap-2'>
 					<Avatar

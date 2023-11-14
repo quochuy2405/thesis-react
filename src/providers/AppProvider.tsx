@@ -28,11 +28,6 @@ const configThemes = {
 		Layout: {
 			siderBg: "white",
 		},
-		Tooltip: {
-			colorBgSpotlight: "",
-			colorText: "rgba(0, 0, 0, 0.88)",
-			borderRadius: 4,
-		},
 	},
 };
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
