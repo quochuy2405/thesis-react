@@ -1,12 +1,13 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import detect from "./features/detect";
 import directory from "./features/directory";
 import fileprogress from "./features/fileprogress";
+import graphedges from "./features/graphedges";
 import loading from "./features/loading";
 import storage from "./features/storage";
-import detect from "./features/detect";
 
 export const store = configureStore({
-	reducer: { directory, loading, fileprogress, storage, detect },
+	reducer: { directory, loading, fileprogress, storage, detect, graphedges },
 	middleware: getDefaultMiddleware({
 		serializableCheck: false,
 	}),

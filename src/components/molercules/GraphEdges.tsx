@@ -104,7 +104,6 @@ const GraphEdges = () => {
 					type: keyNode + index,
 				};
 			});
-			console.log("NodeTypes", NodeTypes);
 			setConfig(NodeTypes);
 
 			const edges = data.edges

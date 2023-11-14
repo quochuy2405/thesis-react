@@ -17,3 +17,4 @@ export { default as LoadFacesExisted } from "./LoadFacesExisted";
 export { default as DrawerSimilar } from "./DrawerSimilar";
 export { default as BuildGNN } from "./BuildGNN";
 export { default as GraphEdges } from "./GraphEdges";
+export { default as GraphEdgesCurrent } from "./GraphEdgesCurrent";

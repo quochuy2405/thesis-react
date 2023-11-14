@@ -16,6 +16,9 @@ import { CgImage } from "react-icons/cg";
 import { FaRegFaceGrinSquint } from "react-icons/fa6";
 import { HiOutlineTag } from "react-icons/hi2";
 import { VscLoading } from "react-icons/vsc";
+import { useDispatch, useSelector } from "react-redux";
+import { closeGraphEdges, setGraphEdges } from "@/redux/features/graphedges";
+import { RootState } from "@/redux/store";
 
 const Page = () => {
 	const formRef = React.useRef<FormInstance>(null);
@@ -24,8 +27,13 @@ const Page = () => {
 	const [data, setData] = useState<any>([]);
 	const [methods, setMethods] = useState<any>({});
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const showGraph = useSelector((state: RootState) => state.graphedges.show);
+	const dispatch = useDispatch();
 
 	const onSubmit = async (data: any) => {
+		if (searchType !== "face" && showGraph) {
+			dispatch(closeGraphEdges());
+		}
 		switch (searchType) {
 			case "tag": {
 				if (!data?.tags?.length) return;
@@ -78,6 +86,14 @@ const Page = () => {
 							const data = res.data;
 							if (data) {
 								setData(data);
+								dispatch(
+									setGraphEdges({
+										data: {
+											nodes: [],
+											edges: [],
+										},
+									})
+								);
 							}
 						})
 						.catch(() => {
@@ -89,11 +105,19 @@ const Page = () => {
 							}, 1200);
 						});
 				} else {
-					await getImageByFaces("1",methods.faces)
+					await getImageByFaces("1", methods.faces)
 						.then((res) => {
 							const data = res.data;
 							if (data) {
 								setData(data);
+								dispatch(
+									setGraphEdges({
+										data: {
+											nodes: [],
+											edges: [],
+										},
+									})
+								);
 							}
 						})
 						.catch(() => {
@@ -265,7 +289,10 @@ const Page = () => {
 											hidden={!methods?.faceExisted}
 											active={methods?.faces}
 											onActive={(name) => {
-												setMethods((curr: any) => ({ ...curr, faces: xor(curr.faces||[],[name]) }));
+												setMethods((curr: any) => ({
+													...curr,
+													faces: xor(curr.faces || [], [name]),
+												}));
 											}}
 										/>
 										<UploadFaces
@@ -295,7 +322,7 @@ const Page = () => {
 					</Form>
 				</div>
 
-				<p className='text-xs uppercase text-black/50 px-4'>
+				<p className='text-xs uppercase text-black/50 px-4 py-2'>
 					Search By <span className='uppercase'>{searchType}</span>
 				</p>
 				{loading ? (

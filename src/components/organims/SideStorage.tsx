@@ -1,14 +1,14 @@
-
+import { getUserInfo } from "@/apis/user";
+import { setStorage } from "@/redux/features/storage";
+import { RootState } from "@/redux/store";
 import { bytesToGB } from "@/utils/common";
 import { Layout, Progress } from "antd";
-import { getUserInfo } from "@/apis/user";
 import { useEffect } from "react";
 import { BiSolidBox, BiSolidVideos } from "react-icons/bi";
 import { BsImage } from "react-icons/bs";
 import { HiDocumentText } from "react-icons/hi2";
 import { useDispatch, useSelector } from "react-redux";
-import { setStorage } from "@/redux/features/storage";
-import { RootState } from "@/redux/store";
+import { GraphEdgesCurrent } from "../molercules";
 
 const SideOption = () => {
 	const storage = useSelector((state: RootState) => state.storage);
@@ -124,7 +124,7 @@ const SideOption = () => {
 					</div>
 				</div>
 				<div className='flex-1 flex flex-col justify-end'>
-				
+					<GraphEdgesCurrent />
 				</div>
 			</div>
 		</Layout.Sider>
