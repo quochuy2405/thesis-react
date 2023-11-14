@@ -1,4 +1,4 @@
-import { HeaderStory, PostItem } from "@/components/molercules";
+import { CreateStory, HeaderStory, PostItem } from "@/components/molercules";
 
 const Social = () => {
 	return (
@@ -18,7 +18,8 @@ const Social = () => {
 						<h3 className="h-[300px] bg-white w-full">4</h3>
 					</div>
 				</Carousel> */}
-				<HeaderStory />
+        <HeaderStory />
+        <CreateStory/>
 				<div className='flex flex-col gap-8 p-4'>
 					{[1, 2, 3, 4, 5].map((item) => (
 						<PostItem key={item} />

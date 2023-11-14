@@ -20,3 +20,4 @@ export { default as GraphEdges } from "./GraphEdges";
 export { default as GraphEdgesCurrent } from "./GraphEdgesCurrent";
 export { default as ModalMoveItemToDestination } from "./ModalMoveItemToDestination";
 export { default as CommentTree } from "./CommentTree";
+export { default as CreateStory } from "./CreateStory";
