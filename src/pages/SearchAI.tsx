@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getImageByFaces } from "@/apis/face";
+import { getImageByFaceUpload, getImageByFaces } from "@/apis/face";
 import { getImageAll, getImageByTagsContains, getImageByTagsMatchAll } from "@/apis/get_image";
 import { InputTag } from "@/components/atoms";
 import { HeaderSearch, LoadFacesExisted, UploadFaces, UploadFiles } from "@/components/molercules";
 import { PreviewImages } from "@/components/organims";
-import { Button, Form, FormInstance, Segmented, Space, Spin, Switch } from "antd";
+import { Button, Form, FormInstance, Segmented, Space, Spin, Switch, UploadFile } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { SegmentedValue } from "antd/es/segmented";
+import clsx from "clsx";
 import React, { useEffect, useState } from "react";
+import { xor } from "lodash";
 
 import { BsTranslate } from "react-icons/bs";
 import { CgImage } from "react-icons/cg";
@@ -21,6 +23,7 @@ const Page = () => {
 	const [searchType, setSearchType] = useState<SegmentedValue>("face");
 	const [data, setData] = useState<any>([]);
 	const [methods, setMethods] = useState<any>({});
+	const [fileList, setFileList] = useState<UploadFile[]>([]);
 
 	const onSubmit = async (data: any) => {
 		switch (searchType) {
@@ -68,10 +71,25 @@ const Page = () => {
 				break;
 			}
 			case "face": {
+				setLoading(true);
 				if (methods.faceUpload) {
-					/* empty */
+					await getImageByFaceUpload("1", fileList)
+						.then((res) => {
+							const data = res.data;
+							if (data) {
+								setData(data);
+							}
+						})
+						.catch(() => {
+							setData([]);
+						})
+						.finally(() => {
+							setTimeout(() => {
+								setLoading(false);
+							}, 1200);
+						});
 				} else {
-					await getImageByFaces("1")
+					await getImageByFaces("1",methods.faces)
 						.then((res) => {
 							const data = res.data;
 							if (data) {
@@ -227,11 +245,13 @@ const Page = () => {
 						)}
 						{searchType === "face" && (
 							<Form.Item
-								className='!mb-0  h-fit py-4'
+								className={clsx("!mb-0 h-fit py-4", {
+									"w-[58%]": !!methods?.faceExisted,
+								})}
 								name='face'
 								label=''
 								rules={[{ required: false }]}>
-								<div className='min-w-[400px]  h-fit flex flex-col gap-2'>
+								<div className=' h-fit flex flex-col gap-2'>
 									<div className='flex gap-2 items-center'>
 										<h3 className='text-xs uppercase text-black/50'>Faces Existed</h3>
 										<Switch
@@ -240,15 +260,19 @@ const Page = () => {
 											onChange={onChangeFace}
 										/>
 									</div>
-									<div className='min-h-[100px] h-fit'>
+									<div className='min-h-[100px] h-fit max-h-[220px] overflow-auto'>
 										<LoadFacesExisted
 											hidden={!methods?.faceExisted}
-											active={methods?.face}
+											active={methods?.faces}
 											onActive={(name) => {
-												setMethods((curr:any) => ({ ...curr, face: name }));
+												setMethods((curr: any) => ({ ...curr, faces: xor(curr.faces||[],[name]) }));
 											}}
 										/>
-										<UploadFaces hidden={!!methods?.faceExisted} />
+										<UploadFaces
+											hidden={!!methods?.faceExisted}
+											onChange={(files) => setFileList(files)}
+											fileList={fileList}
+										/>
 									</div>
 								</div>
 							</Form.Item>
@@ -265,7 +289,7 @@ const Page = () => {
 						<Button
 							loading={loading}
 							htmlType='submit'
-							className='button-form !font-medium mt-6 flex items-center justify-center !bg-emerald-400 !text-white border-none px-8'>
+							className='button-form !font-medium mt-6 flex items-center justify-center !bg-emerald-400 !text-white border-none px-8 !w-[140px]'>
 							Search
 						</Button>
 					</Form>

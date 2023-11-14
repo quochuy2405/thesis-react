@@ -44,7 +44,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 							},
 						}}
 						alt=''
-						className='!rounded-md !h-[400px] !w-[300px]'
+						className='!rounded-md !h-[400px] !min-w-[270px]'
 						src={`https://picsum.photos/800/900`}
 					/>
 				</Watermark>

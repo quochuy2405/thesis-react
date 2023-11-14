@@ -1,4 +1,3 @@
-
 import { ImageType } from "@/types/image";
 import { Button, Col, Divider, Drawer, Empty, Pagination, QRCode, Row, Space, Tag } from "antd";
 import React, { useState } from "react";
@@ -34,12 +33,16 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 		setOpen(false);
 	};
 	return (
-		<div className='flex flex-1 justify-center '>
-			<Space size={[0, 8]} wrap>
-				<Row gutter={{ xs: 8 }}>
-					{!data.length && <Empty />}
+		<div className='flex flex-1 justify-center w-full '>
+			<div className='flex flex-col w-full'>
+				<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+					{!data.length && (
+						<div className='h-full w-full flex items-center justify-center'>
+							<Empty />
+						</div>
+					)}
 					{data.map((item) => (
-						<Col className='gutter-row  h-fit' span={6} key={JSON.stringify(item)}>
+						<Col className='gutter-row' span={6} key={JSON.stringify(item)}>
 							<ImagePreview
 								data={item}
 								onClick={(data) => {
@@ -51,12 +54,13 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 						</Col>
 					))}
 				</Row>
+
 				<Row gutter={{ xs: 8 }} className='flex items-center justify-center'>
 					{!!data.length && (
 						<Pagination defaultCurrent={1} total={data.length} className='!justify-center' />
 					)}
 				</Row>
-			</Space>
+			</div>
 			{isSimilar && (
 				<DrawerSimilar
 					onPickNewImage={(data) => setActiveImage(data)}

@@ -1,9 +1,9 @@
 import { UploadFile } from "antd";
 import { unauth } from "./axios";
 
-export const getImageByFaces = (id: string) => {
+export const getImageByFaces = (id: string,faces:Array<string>) => {
 	return unauth().post(`/face-detect/${id}`, {
-		croppedPhotoName: ["DSC09638_crop_4", "DSC09638_crop_3"],
+		croppedPhotoName: faces,
 	});
 };
 
