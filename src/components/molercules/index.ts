@@ -18,3 +18,5 @@ export { default as DrawerSimilar } from "./DrawerSimilar";
 export { default as BuildGNN } from "./BuildGNN";
 export { default as GraphEdges } from "./GraphEdges";
 export { default as GraphEdgesCurrent } from "./GraphEdgesCurrent";
+export { default as ModalMoveItemToDestination } from "./ModalMoveItemToDestination";
+export { default as CommentTree } from "./CommentTree";

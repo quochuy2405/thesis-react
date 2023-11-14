@@ -1,14 +1,14 @@
-import { Button, Col, Progress, Row, message } from "antd";
 import { uploadFiles } from "@/apis/upload";
+import { getUserInfo } from "@/apis/user";
+import { startTrain } from "@/redux/features/detect";
+import { closeModelFiles, setProgress } from "@/redux/features/fileprogress";
+import { setStorage } from "@/redux/features/storage";
+import { RootState } from "@/redux/store";
+import { Button, Col, Progress, Row, message } from "antd";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModelFiles, setProgress } from "@/redux/features/fileprogress";
-import { RootState } from "@/redux/store";
-import { FileViewItem, UploadFiles } from ".";
-import { getUserInfo } from "@/apis/user";
-import { setStorage } from "@/redux/features/storage";
-import { startTrain } from "@/redux/features/detect";
-import { AiOutlineCloudUpload } from "react-icons/ai";
+import { FileViewItem } from ".";
 
 const UploadFileModal = () => {
 	const fileProgress = useSelector((state: RootState) => state.fileprogress);

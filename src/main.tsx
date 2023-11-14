@@ -38,7 +38,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: "/thesis",
-						element: <Manage />,
+						element: <Social />,
 						errorElement: <Error />,
 					},
 					{

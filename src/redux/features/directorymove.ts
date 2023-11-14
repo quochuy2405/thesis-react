@@ -8,11 +8,11 @@ const initialState: any = {
 	directoriesCurrent: {},
 };
 
-export const directorySlice = createSlice({
-	name: "directory",
+export const directoryMoveSlice = createSlice({
+	name: "directoryMove",
 	initialState,
 	reducers: {
-		setDirectory: (state, { payload }) => {
+		setDirectoryMove: (state, { payload }) => {
 			state.currentPath = payload;
 			const newTree = getObjectByPath(
 				state.currentPath,
@@ -22,7 +22,7 @@ export const directorySlice = createSlice({
 			return state;
 		},
 
-		pushDirectory: (state, { payload }) => {
+		pushDirectoryMove: (state, { payload }) => {
 			if (state.currentPath === "/") {
 				state.currentPath = payload;
 				const newTree = getObjectByPath(
@@ -45,7 +45,7 @@ export const directorySlice = createSlice({
 			state.directoriesTree = payload;
 			return state;
 		},
-		removeDirectory: (state, { payload }) => {
+		removeDirectoryMove: (state, { payload }) => {
 			state.currentPath = state.currentPath.replace(`/${payload}`, "");
 			const newTree = getObjectByPath(
 				state.currentPath,
@@ -59,7 +59,7 @@ export const directorySlice = createSlice({
 			state.directoriesTree = payload;
 			return state;
 		},
-		clearDirectory: (state) => {
+		clearDirectoryMove: (state) => {
 			state.currentPath = "/";
 			const newTree = getObjectByPath(
 				state.currentPath,
@@ -72,11 +72,11 @@ export const directorySlice = createSlice({
 });
 
 export const {
-	clearDirectory,
-	setDirectory,
-	pushDirectory,
-	removeDirectory,
+	clearDirectoryMove,
+	setDirectoryMove,
+	pushDirectoryMove,
+	removeDirectoryMove,
 	setDirectoriesTree,
 	setDirectoriesCurrent,
-} = directorySlice.actions;
-export default directorySlice.reducer;
+} = directoryMoveSlice.actions;
+export default directoryMoveSlice.reducer;

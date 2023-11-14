@@ -144,7 +144,11 @@
 	border-radius: 10px !important;
 }
 
-.node-text tspan{
+.node-text tspan {
 	fill: white !important;
 	opacity: 1;
+}
+.ant-btn-primary {
+	background: #00b96b;
+	color: white;
 }

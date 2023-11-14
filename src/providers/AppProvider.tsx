@@ -1,5 +1,5 @@
 "use client";
-import { UploadFileModal } from "@/components/molercules";
+import { ModalMoveItemToDestination, UploadFileModal } from "@/components/molercules";
 import { store } from "@/redux/store";
 import "@/styles/global.css";
 import { ConfigProvider } from "antd";
@@ -11,13 +11,15 @@ interface AppProviderProps {
 }
 const configThemes = {
 	token: {
-		colorPrimary: "#10b981",
-		borderRadius: 2,
+		colorPrimary: "#00b96b",
+		borderRadius: 6,
 	},
 	components: {
 		Button: {
-			colorPrimary: "#00b96b",
+			// colorPrimary: "#00b96b",
 			algorithm: false, // Enable algorithm
+			primaryColor: "#00b96b",
+			primaryBg: "#00b96b",
 		},
 		Input: {
 			colorPrimary: "#eb2f96",
@@ -26,6 +28,11 @@ const configThemes = {
 		Layout: {
 			siderBg: "white",
 		},
+		Tooltip: {
+			colorBgSpotlight: "",
+			colorText: "rgba(0, 0, 0, 0.88)",
+			borderRadius: 4,
+		},
 	},
 };
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
@@ -33,7 +40,8 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 		<Provider store={store}>
 			<ConfigProvider theme={configThemes}>
 			
-					<UploadFileModal />
+        <UploadFileModal />
+        <ModalMoveItemToDestination/>
 					{children}
 				
 			</ConfigProvider>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Layout, Menu } from "antd";
-import { BiSolidCategory } from "react-icons/bi";
+import { GiAbstract042 } from "react-icons/gi";
 import { FaTrash } from "react-icons/fa";
 import { HiMiniFolder } from "react-icons/hi2";
 import { IoMdLogOut } from "react-icons/io";
@@ -10,7 +10,7 @@ import { TbLockSquareRoundedFilled } from "react-icons/tb";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const SideBar = () => {
-	const navigate  = useNavigate();
+	const navigate = useNavigate();
 	// const params = useSearchParams();
 	const location = useLocation();
 	console.log("localtion.pathname", location.pathname);
@@ -18,15 +18,24 @@ const SideBar = () => {
 	const items: any = [
 		{
 			key: "/thesis",
-			icon: <BiSolidCategory size={18} />,
+			icon: (
+				<span className='flex items-center justify-center h-full w-full'>
+					<GiAbstract042 size={18} />
+				</span>
+			),
 			label: "All",
+
 			onClick: () => {
 				navigate("/thesis");
 			},
 		},
 		{
 			key: "/thesis/search",
-			icon: <IoSearch size={18} />,
+			icon: (
+				<span className='flex items-center justify-center h-full w-full'>
+					<IoSearch size={18} />
+				</span>
+			),
 			label: "Search AI",
 			onClick: () => {
 				navigate("/thesis/search");
@@ -34,7 +43,11 @@ const SideBar = () => {
 		},
 		{
 			key: "/thesis/manage",
-			icon: <HiMiniFolder size={18} />,
+			icon: (
+				<span className='flex items-center justify-center h-full w-full'>
+					<HiMiniFolder size={18} />
+				</span>
+			),
 			label: "Folder manager",
 			onClick: () => {
 				navigate("/thesis/manage");
@@ -42,7 +55,11 @@ const SideBar = () => {
 		},
 		{
 			key: "/thesis/private",
-			icon: <TbLockSquareRoundedFilled size={18} />,
+			icon: (
+				<span className='flex items-center justify-center h-full w-full'>
+					<TbLockSquareRoundedFilled size={30} />
+				</span>
+			),
 			label: "Private",
 			onClick: () => {
 				navigate("/thesis/private");
@@ -50,7 +67,11 @@ const SideBar = () => {
 		},
 		{
 			key: "/thesis/trash",
-			icon: <FaTrash size={14} />,
+			icon: (
+				<span className='flex items-center justify-center h-full w-full'>
+					<FaTrash size={14} />
+				</span>
+			),
 			label: "Trash",
 			onClick: () => {
 				navigate("/thesis/trash");
@@ -58,7 +79,11 @@ const SideBar = () => {
 		},
 		{
 			key: "/thesis/analysis",
-			icon: <IoAnalytics size={14} />,
+			icon: (
+				<span className='flex items-center justify-center h-full w-full'>
+					<IoAnalytics size={14} />
+				</span>
+			),
 			label: "Analysis",
 			onClick: () => {
 				navigate("/thesis/analysis");
@@ -76,7 +101,7 @@ const SideBar = () => {
 					className='flex-1 flex gap-2 flex-col w-full justify-center items-center !text-white !bg-emerald-400'
 					mode='inline'
 					defaultSelectedKeys={[
-						items.find((item: any) => location.pathname===item.key)?.key || items[0].key,
+						items.find((item: any) => location.pathname === item.key)?.key || items[0].key,
 					]}
 					items={items}
 				/>
