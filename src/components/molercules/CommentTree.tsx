@@ -17,13 +17,17 @@ const Comment = ({ comment }: any) => {
 					height: `${children?.length * 40}px`,
 				}}></div>
 			<div className='flex gap-2 relative'>
-				<Avatar className="min-w-8 min-h-8 object-cover relative z-[2]" src='https://i.pinimg.com/564x/19/2b/aa/192baa78f58f9af71a75bddedf158e60.jpg' />
+				<Avatar
+					className='min-w-8 min-h-8 object-cover relative z-[2]'
+					src='https://i.pinimg.com/564x/19/2b/aa/192baa78f58f9af71a75bddedf158e60.jpg'
+				/>
 				{/* Comment Content */}
 				{!comment?.isTop && (
 					<div className='border-2 border-b-neutral-300 border-l-neutral-300 w-4 h-4 absolute -left-3 top-[5px] rounded-bl-md border-transparent'></div>
 				)}
 
-				<div className={`bg-neutral-50 shadow-sm border border-neutral-100 p-2 pr-0 rounded-lg w-full ml-${marginLeft}`}>
+				<div
+					className={`bg-neutral-50 shadow-sm border border-neutral-100 p-2 pr-0 rounded-lg w-full ml-${marginLeft}`}>
 					<h2 className='font-semibold text-xs'>{user}</h2>
 					<p className='text-xs'>{text}</p>
 				</div>
@@ -55,7 +59,7 @@ const CommentTree = () => {
 					text: "Reply to Comment 1",
 					depth: 1,
 					children: [{ id: 3, user: "User3", text: "Reply to Reply 1", depth: 2 }],
-				},
+				}
 			],
 		},
 		{ id: 4, isTop: 1, user: "User4", text: "Comment 2", depth: 0 },

@@ -56,11 +56,13 @@ const GraphEdges = () => {
 	const [config, setConfig] = useState(GraphConfig.NodeTypes);
 	const NodeSubtypes = GraphConfig.NodeSubtypes;
 	const EdgeTypes = GraphConfig.EdgeTypes;
-	const radius = 500; // Adjust the radius of the circle as needed
-	const centerX = 150; // Adjust the x-coordinate of the circle center
-	const centerY = 150; // Adjust the y-coordinate of the circle center
+
 	const fetch = async () => {
 		await getGraphRNN("1").then(({ data }: any) => {
+			console.log("data", data);
+			const radius = data.nodes.length * 25; // Adjust the radius of the circle as needed
+			const centerX = data.nodes.length * 100; // Adjust the x-coordinate of the circle center
+			const centerY = data.nodes.length * 100; // Adjust the y-coordinate of the circle center
 			let NodeTypes = { ...config };
 			const nodes = data.nodes.map((item: any, index: any) => {
 				const angle = (index / data.nodes.length) * 2 * Math.PI; // Calculate the angle based on the index
@@ -84,7 +86,7 @@ const GraphEdges = () => {
 							<symbol viewBox='0 0 30 30' id={keyNode + index} key={index}>
 								<defs>
 									<clipPath id={`circleClip${index}`}>
-										<circle cx='15' cy='15' r={isNode?"15":'18'} />
+										<circle cx='15' cy='15' r={isNode ? "15" : "18"} />
 									</clipPath>
 								</defs>
 								<image
@@ -107,30 +109,25 @@ const GraphEdges = () => {
 			});
 			setConfig(NodeTypes);
 
-			const edges = data.edges
-				.map((item: any) => {
-					const names = item.edge
-						.replaceAll("('", "")
-						.replaceAll("'", "")
-						.replaceAll(")", "")
-						.replaceAll(" ", "")
-						.split(",");
+			const edges: any = data.edges.map((item: any) => {
+				const _temp = item.edge
+					.replaceAll("(", "")
+					.replaceAll(")", "")
+					.replaceAll("'", "")
+					.replaceAll(" ", "")
+					.replaceAll("'", "")
+					.split(",");
+				const target = nodes.findIndex((item: any) => item.title === _temp[1]);
+				const source = nodes.findIndex((item: any) => item.title === _temp[0]);
+				const edge = {
+					source: source,
+					target: target,
+					type: "emptyEdge",
+				};
 
-					const cropIndex = nodes.findIndex((item: any) => item.title === names[names.length - 1]);
-					const edges_node = [];
-					for (let i = 0; i < names.length - 1; i++) {
-						const name = names[i];
-
-						const source = {
-							source: nodes.findIndex((item: any) => item.title === name),
-							target: cropIndex,
-							type: "emptyEdge",
-						};
-						edges_node.push(source);
-					}
-					return edges_node;
-				})
-				.flat();
+				return edge;
+			});
+			console.log("edges", edges);
 
 			setGraph({ edges, nodes });
 		});

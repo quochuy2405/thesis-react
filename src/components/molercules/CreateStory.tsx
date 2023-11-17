@@ -1,9 +1,9 @@
-import { Button, Image, Spin, UploadProps } from "antd";
+import { Button, Image, Popconfirm, Spin, UploadProps } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import Upload, { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import { useState } from "react";
 import { BiCamera } from "react-icons/bi";
-import { BsSendCheck } from "react-icons/bs";
+import { BsQuestionCircle, BsSendCheck } from "react-icons/bs";
 import { SlTrash } from "react-icons/sl";
 import { VscLoading } from "react-icons/vsc";
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
@@ -54,11 +54,20 @@ const CreateStory = () => {
 				)}
 				{imageUrl && (
 					<div>
-						<div
-							className='p-2 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-100/50 cursor-pointer'
-							onClick={()=>setImageUrl(undefined)}>
-							<SlTrash size={30} />
-						</div>
+						<Popconfirm
+							title='Delete the image'
+							description='Are you sure to delete this image?'
+							icon={
+								<span className='flex items-center justify-center p-1'>
+									<BsQuestionCircle color='red' />
+								</span>
+							}
+							onConfirm={() => setImageUrl(undefined)}>
+							<div className='p-2 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-100/50 cursor-pointer'>
+								<SlTrash size={30} />
+							</div>
+						</Popconfirm>
+
 						<Image src={imageUrl} alt='avatar' style={{ width: "100%" }} />
 					</div>
 				)}

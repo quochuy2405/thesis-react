@@ -94,7 +94,7 @@ const SideBar = () => {
 		<Layout.Sider collapsedWidth={60} trigger={null} collapsible collapsed={true}>
 			<div className='flex flex-col h-full pb-10 w-full !bg-emerald-400'>
 				<div className='h-10 w-full rounded-lg text-white flex items-center justify-center font-extrabold uppercase'>
-					Thesis/
+					The/sis
 				</div>
 
 				<Menu
