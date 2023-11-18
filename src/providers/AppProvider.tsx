@@ -17,13 +17,13 @@ const configThemes = {
 	components: {
 		Button: {
 			// colorPrimary: "#00b96b",
-			algorithm: false, // Enable algorithm
+			algorithm: true, // Enable algorithm
 			primaryColor: "#00b96b",
 			primaryBg: "#00b96b",
 		},
 		Input: {
 			colorPrimary: "#eb2f96",
-			algorithm: false, // Enable algorithm
+			algorithm: true, // Enable algorithm
 		},
 		Layout: {
 			siderBg: "white",

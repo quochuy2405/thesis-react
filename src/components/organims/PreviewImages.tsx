@@ -24,7 +24,6 @@ const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
 const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 	const [activeImage, setActiveImage] = useState<ImageType>();
 	const [open, setOpen] = useState(false);
-
 	const showLargeDrawer = () => {
 		setOpen(true);
 	};
@@ -41,7 +40,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 							<Empty />
 						</div>
 					)}
-					{data.map((item) => (
+					{data?.map((item) => (
 						<Col className='gutter-row min-w-[270px] m-auto' span={6} key={JSON.stringify(item)} >
 							<ImagePreview
 								data={item}

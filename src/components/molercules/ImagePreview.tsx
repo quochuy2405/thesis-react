@@ -1,3 +1,4 @@
+import { IMAGE_PREFIX } from "@/constants/index";
 import type { ImageType } from "@/types/image";
 import { getRandomColor } from "@/utils/common";
 import { Image, Space, Tag, Watermark } from "antd";
@@ -30,7 +31,8 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 					{item}
 				</Tag>
 			));
-	}, [data.tag]);
+  }, [data.tag]);
+  console.log('data', data)
 	return (
 		<div className='w-full h-fit p-1 flex flex-col hover:bg-neutral-50 rounded-md cursor-pointer relative'>
 			<div className='w-full h-fit relative image-preview'>
@@ -45,7 +47,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 						}}
 						alt=''
 						className='!rounded-md !h-[400px] w-full'
-						src={`https://picsum.photos/800/900`}
+						src={IMAGE_PREFIX+'1/'+ data+'.jpg'}
 					/>
 				</Watermark>
 

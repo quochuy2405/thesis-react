@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getCroppedPhoto } from "@/apis/get_image";
+import { IMAGE_PREFIX_CROP } from "@/constants/index";
 import { Avatar, Tooltip } from "antd";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
@@ -30,18 +31,20 @@ const LoadFacesExisted: React.FC<LoadFacesExistedProps> = ({ hidden, active, onA
 			className={clsx("flex items-center gap-4 flex-wrap h-fit", {
 				hidden: !!hidden,
 			})}>
-			{faces.map((item: any, index: number) => (
+			{faces.map((item: any) => (
 				<Tooltip title={item.photoName}>
 					<Avatar
 						key={item.photoName}
 						className={clsx("cursor-pointer", {
-							"border-2 border-emerald-400": active?.includes(item.photoName?.replace(".png", "")?.replace(".jpg", "")),
+							"border-2 border-emerald-400": active?.includes(
+								item.photoName?.replace(".png", "")?.replace(".jpg", "")
+							),
 						})}
 						onClick={() => onActive(item.photoName?.replace(".png", "")?.replace(".jpg", ""))}
 						size={100.4}
 						alt={item.photoName}
 						// src={"sftp://root@14.225.203.193" + item.photoDirectory}
-						src={`https://picsum.photos/id/${index}/200/300`}
+						src={IMAGE_PREFIX_CROP + "1/" + item.photoName}
 					/>
 				</Tooltip>
 			))}

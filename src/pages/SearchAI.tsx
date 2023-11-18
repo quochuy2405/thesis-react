@@ -105,8 +105,9 @@ const Page = () => {
 					await getImageByFaces("1", methods.faces)
 						.then((res) => {
 							const data = res.data;
-							if (data) {
-								setData(data);
+              if (data) {
+                console.log('data', data)
+								setData(data[0].results);
 								dispatch(
 									setGraphEdges({
 										data: {
@@ -276,7 +277,7 @@ const Page = () => {
 								name='face'
 								label=''
 								rules={[{ required: false }]}>
-								<div className=' h-fit flex flex-col gap-2'>
+								<div className=' h-fit flex flex-col gap-2 py-3'>
 									<div className='flex gap-2 items-center'>
 										<h3 className='text-xs uppercase text-black/50'>Faces Existed</h3>
 										<Switch

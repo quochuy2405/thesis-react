@@ -1,5 +1,4 @@
-
-import { Timeline } from "antd";
+import { Timeline, message } from "antd";
 import { buildGraphGNN, cropFaces, prepareDataGraphGNN } from "@/apis/detect";
 import { useEffect, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
@@ -17,7 +16,6 @@ const BuildGNN = () => {
 		items: [],
 		pending: "",
 	});
-
 
 	const delayTime = async () => {
 		await new Promise((resolve) => {
@@ -46,31 +44,46 @@ const BuildGNN = () => {
 					...curr,
 					pending: ` Preparing data for graph Artificial neural network...`,
 				}));
-				await prepareDataGraphGNN("1").then(async () => {
-					await delayTime();
-					setStatus((curr) => ({
-						...curr,
-						pending: `Building Artificial neural network...`,
-					}));
-					setStatus((curr) => ({
-						...curr,
-						items: [...curr.items, { title: "Data for graph Artificial neural network prepared." }],
-					}));
-					await buildGraphGNN("1")
-						.then(async () => {
-							await delayTime();
-							setStatus((curr) => ({
-								...curr,
-								pending: "",
-								items: [...curr.items, { title: "Artificial neural network is builded." }],
-							}));
-						})
-						.finally(() => {
-							dispatch(closeTrain());
-						});
-				});
+				await prepareDataGraphGNN("1")
+					.then(async () => {
+						await delayTime();
+						setStatus((curr) => ({
+							...curr,
+							pending: `Building Artificial neural network...`,
+						}));
+						setStatus((curr) => ({
+							...curr,
+							items: [
+								...curr.items,
+								{ title: "Data for graph Artificial neural network prepared." },
+							],
+						}));
+						await buildGraphGNN("1")
+							.then(async () => {
+								await delayTime();
+								setStatus((curr) => ({
+									...curr,
+									pending: "",
+									items: [...curr.items, { title: "Artificial neural network is builded." }],
+								}));
+							})
+							.catch(() => {
+								message.error("Error Build Face");
+							})
+							.finally(() => {
+								dispatch(closeTrain());
+							});
+					})
+					.catch(() => {
+						message.error("Error Prepared Data");
+					})
+					.finally(() => {
+						dispatch(closeTrain());
+					});
 			})
-			.catch(() => {})
+			.catch(() => {
+				message.error("Analysis face");
+			})
 			.finally(() => {
 				dispatch(closeTrain());
 			});
