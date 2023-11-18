@@ -8,24 +8,26 @@ import { Button, Form, FormInstance, Segmented, Space, Spin, Switch, UploadFile 
 import TextArea from "antd/es/input/TextArea";
 import { SegmentedValue } from "antd/es/segmented";
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
 import { xor } from "lodash";
+import React, { useEffect, useState } from "react";
 
+import { closeGraphEdges, setGraphEdges } from "@/redux/features/graphedges";
+import { RootState } from "@/redux/store";
 import { BsTranslate } from "react-icons/bs";
 import { CgImage } from "react-icons/cg";
 import { FaRegFaceGrinSquint } from "react-icons/fa6";
 import { HiOutlineTag } from "react-icons/hi2";
 import { VscLoading } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
-import { closeGraphEdges, setGraphEdges } from "@/redux/features/graphedges";
-import { RootState } from "@/redux/store";
 
 const Page = () => {
 	const formRef = React.useRef<FormInstance>(null);
 	const [loading, setLoading] = useState(false);
 	const [searchType, setSearchType] = useState<SegmentedValue>("face");
 	const [data, setData] = useState<any>([]);
-	const [methods, setMethods] = useState<any>({});
+	const [methods, setMethods] = useState<any>({
+		faceExisted: false,
+	});
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
 	const showGraph = useSelector((state: RootState) => state.graphedges.show);
 	const dispatch = useDispatch();
@@ -77,12 +79,13 @@ const Page = () => {
 			}
 			case "face": {
 				setLoading(true);
-				if (methods.faceUpload) {
+				if (!methods.faceExisted) {
 					await getImageByFaceUpload("1", fileList)
 						.then((res) => {
 							const data = res.data;
-							if (data) {
-								setData(data);
+              if (data) {
+
+								setData(data[0].results);
 								dispatch(
 									setGraphEdges({
 										data: {
@@ -105,8 +108,7 @@ const Page = () => {
 					await getImageByFaces("1", methods.faces)
 						.then((res) => {
 							const data = res.data;
-              if (data) {
-                console.log('data', data)
+							if (data) {
 								setData(data[0].results);
 								dispatch(
 									setGraphEdges({
@@ -138,7 +140,8 @@ const Page = () => {
 		setMethods((curr: any) => ({ ...curr, isMatchAll: !!value }));
 	};
 
-	const onChangeFace = (value: boolean) => {
+  const onChangeFace = (value: boolean) => {
+
 		setMethods((curr: any) => ({ ...curr, faceExisted: !!value }));
 	};
 
@@ -173,8 +176,7 @@ const Page = () => {
 				<p className='text-xs uppercase text-black/50 px-4 py-2'>MODELS</p>
 				<Space direction='vertical' className='px-4'>
 					<Segmented
-            className='!bg-neutral-50'
-          
+						className='!bg-neutral-50'
 						onChange={(value) => {
 							setSearchType(value);
 						}}
@@ -271,7 +273,7 @@ const Page = () => {
 						)}
 						{searchType === "face" && (
 							<Form.Item
-								className={clsx("!mb-0 h-fit py-4", {
+								className={clsx("!mb-0 h-fit min-h-[100px] mt-3", {
 									"w-[58%]": !!methods?.faceExisted,
 								})}
 								name='face'
@@ -283,7 +285,9 @@ const Page = () => {
 										<Switch
 											checked={methods.faceExisted}
 											className='bg-gray-500 flex items-center'
-											onChange={onChangeFace}
+											onChange={(checked) => {
+												onChangeFace(!!checked);
+											}}
 										/>
 									</div>
 									<div className='min-h-[100px] h-fit max-h-[220px] overflow-auto'>

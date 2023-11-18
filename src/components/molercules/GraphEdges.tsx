@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { GraphView } from "react-digraph";
 import { getGraphRNN } from "../../apis/graph-rnn";
+import { IMAGE_PREFIX, IMAGE_PREFIX_CROP } from "@/constants/index";
 
 const NODE_KEY = "id"; // Allows D3 to correctly update DOM
 const GraphEdges = () => {
@@ -70,12 +71,12 @@ const GraphEdges = () => {
 				const y = centerY + radius * Math.sin(angle);
 				const isNode = item.node.includes("crop");
 				const keyNode = isNode ? "nodemain" : "noderelated";
-				const typeText = isNode ? "Faces" : "Related iamge";
-
+				const typeText = isNode ? "Faces" : "Related image";
+        
 				const url = isNode
-					? "https://images.pexels.com/photos/2380794/pexels-photo-2380794.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-					: "https://images.pexels.com/photos/19045568/pexels-photo-19045568/free-photo-of-a-group-of-young-people-posing-together-for-a-picture-in-the-garden.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
-
+					? IMAGE_PREFIX_CROP + "1/" + item.node.replaceAll(".jpg", "").replaceAll(".png", "")
+					: IMAGE_PREFIX + "1/" + item.node.replaceAll(".jpg", "").replaceAll(".png", "");
+        
 				NodeTypes = {
 					...NodeTypes,
 					[keyNode + index]: {

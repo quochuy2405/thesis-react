@@ -13,8 +13,5 @@ export const getImageByFaceUpload = (id: string, files: UploadFile[]) => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		form.append("files", file.originFileObj as any);
 	}
-	return unauth().post(`/face-detect/${id}`, {
-		croppedPhotoName: ["DSC09638_crop_4", "DSC09638_crop_3"],
-		files: form,
-	});
+	return unauth().post(`/face-detect/upload/${id}`, form);
 };

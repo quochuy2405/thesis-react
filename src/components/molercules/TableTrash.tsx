@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Button, Table } from "antd";
 import moment from "moment";
@@ -18,11 +19,7 @@ const IconColor = {
 	video: "text-[#E1AA74]",
 	folder: "text-yellow-600",
 };
-type DataTableType = {
-	key: string;
-	name: string;
-	type: string;
-};
+
 const TableFolder = () => {
 	const dataSource = [
 		{

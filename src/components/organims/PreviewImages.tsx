@@ -1,8 +1,9 @@
+import { getImageDetails } from "@/apis/get_image";
 import { ImageType } from "@/types/image";
-import { Button, Col, Divider, Drawer, Empty, Pagination, QRCode, Row, Space, Tag } from "antd";
-import React, { useState } from "react";
-import { DrawerSimilar, ImagePreview } from "../molercules";
 import { getRandomColor } from "@/utils/common";
+import { Button, Col, Divider, Drawer, Empty, Pagination, QRCode, Row, Space, Tag } from "antd";
+import React, { useEffect, useState } from "react";
+import { DrawerSimilar, ImagePreview } from "../molercules";
 
 interface DescriptionItemProps {
 	title: string;
@@ -23,6 +24,7 @@ const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
 
 const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 	const [activeImage, setActiveImage] = useState<ImageType>();
+	const [detailsImage, setDetailsImage] = useState<ImageType>();
 	const [open, setOpen] = useState(false);
 	const showLargeDrawer = () => {
 		setOpen(true);
@@ -31,6 +33,16 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 	const onClose = () => {
 		setOpen(false);
 	};
+
+	useEffect(() => {
+		if (activeImage) {
+			getImageDetails("1", activeImage?.photoName)
+				.then(({ data }) => {
+					setDetailsImage(data);
+				})
+				.catch((e) => console.log("e", e));
+		}
+	}, [activeImage]);
 	return (
 		<div className='flex flex-1 justify-center w-full '>
 			<div className='flex flex-col w-full'>
@@ -41,7 +53,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 						</div>
 					)}
 					{data?.map((item) => (
-						<Col className='gutter-row min-w-[270px] m-auto' span={6} key={JSON.stringify(item)} >
+						<Col className='gutter-row min-w-[270px] m-auto' span={6} key={JSON.stringify(item)}>
 							<ImagePreview
 								data={item}
 								onClick={(data) => {
@@ -63,7 +75,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 			{isSimilar && (
 				<DrawerSimilar
 					onPickNewImage={(data) => setActiveImage(data)}
-					IdImage={activeImage?.photoSerialId}
+					photoName={activeImage?.photoName}
 					onClose={onClose}
 					open={open}
 				/>
@@ -89,7 +101,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 					</Space>
 				}>
 				<p className='font-semibold' style={{ marginBottom: 24 }}>
-					Photo name: {activeImage?.photo_name}
+					Photo name: {detailsImage?.photoName}
 				</p>
 				<p className='font-semibold'>Models detect</p>
 				<Row>
@@ -97,7 +109,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 						<DescriptionItem title='Type' content='Image/png' />
 					</Col>
 					<Col span={12}>
-						<DescriptionItem title='Descriptions' content={activeImage?.description} />
+						<DescriptionItem title='Descriptions' content={detailsImage?.description} />
 					</Col>
 				</Row>
 
@@ -106,7 +118,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 				<Row className='gap-2'>
 					<DescriptionItem title='Tags' content='' />
 					<Space size={[0, 8]} wrap>
-						{activeImage?.tag
+						{detailsImage?.tag
 							?.split(",")
 
 							.map((item) => (
@@ -122,7 +134,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 				<Row className='gap-2'>
 					<DescriptionItem title='Models name' content='' />
 					<Space size={[0, 8]} wrap>
-						{activeImage?.model_name?.split(",").map((item) => (
+						{detailsImage?.modelName?.split(",").map((item) => (
 							<Tag
 								color={getRandomColor()}
 								key={item}
@@ -139,7 +151,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 					<Col span={24}>
 						<DescriptionItem title='Clothes' content='' />
 						<Space size={[0, 8]} wrap>
-							{activeImage?.clothes?.split(",").map((item) => (
+							{detailsImage?.clothes?.split(",").map((item) => (
 								<Tag
 									color={getRandomColor()}
 									key={item}
@@ -154,7 +166,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 					<Col span={24}>
 						<DescriptionItem title='Clothings' content='' />
 						<Space size={[0, 8]} wrap>
-							{activeImage?.clothing?.split(",").map((item) => (
+							{detailsImage?.clothing?.split(",").map((item) => (
 								<Tag
 									color={getRandomColor()}
 									key={item}
@@ -169,7 +181,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 					<Col span={24}>
 						<DescriptionItem title='Prospects' content='' />
 						<Space size={[0, 8]} wrap>
-							{activeImage?.prospect?.split(",").map((item) => (
+							{detailsImage?.prospect?.split(",").map((item) => (
 								<Tag
 									color={getRandomColor()}
 									key={item}
@@ -185,7 +197,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 					<Col span={24}>
 						<DescriptionItem title='Person' content='' />
 						<Space size={[0, 8]} wrap>
-							{activeImage?.person?.split(",").map((item) => (
+							{detailsImage?.person?.split(",").map((item) => (
 								<Tag
 									color={getRandomColor()}
 									key={item}
@@ -201,7 +213,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 					<Col span={24}>
 						<DescriptionItem title='Deep clothing' content='' />
 						<Space size={[0, 8]} wrap>
-							{activeImage?.deep_clothing?.split(",").map((item) => (
+							{detailsImage?.deepClothing?.split(",").map((item) => (
 								<Tag
 									color={getRandomColor()}
 									key={item}
@@ -228,7 +240,7 @@ const PreviewImages: React.FC<PreviewImagesProps> = ({ data, isSimilar }) => {
 						<DescriptionItem title='Share url link' content />
 						<Space direction='vertical' align='center'>
 							<QRCode
-								value={activeImage?.photo_directory || "-"}
+								value={detailsImage?.photo_directory || "-"}
 								// status="expired"
 								onRefresh={() => console.log("refresh")}
 							/>

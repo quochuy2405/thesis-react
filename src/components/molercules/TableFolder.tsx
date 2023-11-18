@@ -17,11 +17,11 @@ const IconColor = {
 	video: "text-[#E1AA74]",
 	folder: "text-yellow-600",
 };
-type DataTableType = {
-	key: string;
-	name: string;
-	type: string;
-};
+// type DataTableType = {
+// 	key: string;
+// 	name: string;
+// 	type: string;
+// };
 const TableFolder = () => {
 	const dataSource = [
 		{
@@ -202,12 +202,13 @@ const TableFolder = () => {
 		},
 	];
 
-	const columns: Array<any> = [
+	const columns: Array<object> = [
 		{
 			title: "Name",
 			dataIndex: "name",
 			key: "name",
 			className: "text-xs",
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			render: (text: string, record: any) => {
 				return (
 					<div className="flex items-center gap-2 cursor-pointer">

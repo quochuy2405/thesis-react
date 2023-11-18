@@ -37,14 +37,18 @@ const LoadFacesExisted: React.FC<LoadFacesExistedProps> = ({ hidden, active, onA
 						key={item.photoName}
 						className={clsx("cursor-pointer", {
 							"border-2 border-emerald-400": active?.includes(
-								item.photoName?.replace(".png", "")?.replace(".jpg", "")
+								item.photoName?.replaceAll(".png", "")?.replaceAll(".jpg", "")
 							),
 						})}
-						onClick={() => onActive(item.photoName?.replace(".png", "")?.replace(".jpg", ""))}
+						onClick={() => onActive(item.photoName?.replaceAll(".png", "")?.replaceAll(".jpg", ""))}
 						size={100.4}
 						alt={item.photoName}
 						// src={"sftp://root@14.225.203.193" + item.photoDirectory}
-						src={IMAGE_PREFIX_CROP + "1/" + item.photoName}
+						src={
+							IMAGE_PREFIX_CROP +
+							"1/" +
+							item.photoName.replaceAll(".png", "")?.replaceAll(".jpg", "")
+						}
 					/>
 				</Tooltip>
 			))}

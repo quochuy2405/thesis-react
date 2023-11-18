@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Table } from "antd";
 import moment from "moment";
@@ -15,11 +16,7 @@ const IconColor = {
 	doc: "text-[#0079FF]",
 	video: "text-[#E1AA74]",
 };
-type DataTableType = {
-	key: string;
-	name: string;
-	type: string;
-};
+
 const TableRecent = () => {
 	const dataSource = [
 		{

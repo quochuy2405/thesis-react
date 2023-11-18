@@ -16,7 +16,7 @@ interface ImagePreviewProps {
 }
 const ImagePreview: React.FC<ImagePreviewProps> = ({
 	onClick,
-	onClose,
+  onClose,
 	data,
 }) => {
 	const tags = useMemo(() => {
@@ -32,22 +32,24 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 				</Tag>
 			));
   }, [data.tag]);
-  console.log('data', data)
 	return (
 		<div className='w-full h-fit p-1 flex flex-col hover:bg-neutral-50 rounded-md cursor-pointer relative'>
 			<div className='w-full h-fit relative image-preview'>
 				<Watermark content='Thesis'>
 					<Image
 						preview={{
-							movable: true,
+              movable: true,
+              minScale:0.3,
 							onVisibleChange(value) {
 								if (!value) onClose();
 								else onClick(data);
 							},
-						}}
+            }}
+            
+            
 						alt=''
-						className='!rounded-md !h-[400px] w-full'
-						src={IMAGE_PREFIX+'1/'+ data+'.jpg'}
+						className='!rounded-md !h-[400px] w-full object-cover'
+						src={IMAGE_PREFIX + "1/" + data.photoName.replaceAll(".jpg", "").replaceAll(".png", "")}
 					/>
 				</Watermark>
 
@@ -69,7 +71,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 				</div>
 			</div>
 			<div className='py-2 flex flex-col gap-2 h-fit'>
-				<h2 className='font-semibold text-sm'>{data?.photo_name}</h2>
+				<h2 className='font-semibold text-sm'>{data?.photoName}</h2>
 
 				<Space size={[0, 8]} wrap>
 					{tags}

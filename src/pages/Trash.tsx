@@ -1,4 +1,4 @@
-"use client";
+
 import { HeaderSearch, TableTrash } from "@/components/molercules";
 
 const Page = () => {
