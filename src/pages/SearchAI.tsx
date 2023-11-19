@@ -244,7 +244,7 @@ const Page = () => {
 						ref={formRef}
 						name='control-ref'
 						initialValues={{ remember: true }}
-						onFinish={onSubmit}
+						onFinish={(data)=>onSubmit(data)}
 						className='flex gap-4 items-center'>
 						{searchType === "tag" && (
 							<div className='flex flex-col gap-2'>
