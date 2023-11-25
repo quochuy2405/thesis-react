@@ -14,11 +14,12 @@ const getBase64 = (file: RcFile): Promise<string> =>
 		reader.onerror = (error) => reject(error);
 	});
 interface UploadFacesProps {
-	hidden: boolean;
+	hidden?: boolean;
 	onChange: (fileList: UploadFile[]) => void;
-	fileList: UploadFile[];
+  fileList: UploadFile[];
+  size?:number
 }
-const UploadFaces: React.FC<UploadFacesProps> = ({ hidden,fileList,onChange }) => {
+const UploadFaces: React.FC<UploadFacesProps> = ({ hidden=false, fileList, onChange, size=5 }) => {
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState("");
 
@@ -38,7 +39,7 @@ const UploadFaces: React.FC<UploadFacesProps> = ({ hidden,fileList,onChange }) =
 		onChange(newFileList);
 
 	const uploadButton = (
-		<div className="flex items-center justify-center flex-col gap-1">
+		<div className='flex items-center justify-center flex-col gap-1'>
 			<div>
 				<BsPlus size={20} />
 			</div>
@@ -49,17 +50,17 @@ const UploadFaces: React.FC<UploadFacesProps> = ({ hidden,fileList,onChange }) =
 	);
 	return (
 		<div
-			className={clsx("flex items-center justify-center flex-1", {
+			className={clsx("flex items-center justify-center flex-1 h-fit", {
 				hidden: !!hidden,
 			})}>
 			<Upload
 				beforeUpload={() => false}
 				listType='picture-circle'
 				fileList={fileList}
-				maxCount={5}
+				maxCount={size}
 				onPreview={handlePreview}
 				onChange={handleChange}>
-				{fileList.length >= 5 ? null : uploadButton}
+				{fileList.length >= size ? null : uploadButton}
 			</Upload>
 			<Modal
 				open={previewOpen}

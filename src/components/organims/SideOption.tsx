@@ -1,11 +1,10 @@
-
+import { openModelFiles, setFiles } from "@/redux/features/fileprogress";
+import { RootState } from "@/redux/store";
 import { Avatar, Badge, Layout } from "antd";
 import { BiUser } from "react-icons/bi";
 import { IoMdNotifications } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { openModelFiles, setFiles } from "@/redux/features/fileprogress";
-import { RootState } from "@/redux/store";
-import { BuildGNN, UploadFiles } from "../molercules";
+import { UploadFiles } from "../molercules";
 
 const SideOption = () => {
 	const files = useSelector((state: RootState) => state.fileprogress.files);
@@ -51,7 +50,7 @@ const SideOption = () => {
 						multiple
 					/>
 				</div>
-				<BuildGNN />
+				{/* <BuildGNN /> */}
 			</div>
 		</Layout.Sider>
 	);

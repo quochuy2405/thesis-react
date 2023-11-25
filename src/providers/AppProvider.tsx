@@ -28,6 +28,9 @@ const configThemes = {
 		Layout: {
 			siderBg: "white",
 		},
+		Menu: {
+			itemPaddingInline:0
+		},
 	},
 };
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {

@@ -7,7 +7,7 @@
 @layer base {
 	* {
 		box-sizing: border-box;
-		font-family: "Poppins", sans-serif;
+		font-family: "Poppins", sans-serif !important;
 	}
 
 	.fade-enter .switch {
@@ -154,4 +154,8 @@
 }
 .ant-image-preview-img {
 	border-radius: 4px !important;
+}
+
+.ant-menu-vertical .ant-menu-item {
+	padding-inline: 0 !important;
 }

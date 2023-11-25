@@ -3,53 +3,42 @@ import type { ImageType } from "@/types/image";
 import { getRandomColor } from "@/utils/common";
 import { Image, Space, Tag, Watermark } from "antd";
 import React, { useMemo } from "react";
-import {
-	MdOutlineDriveFileMove,
-	MdOutlineFavoriteBorder,
-	MdPublic,
-} from "react-icons/md";
+import { MdOutlineDriveFileMove, MdOutlineFavoriteBorder, MdPublic } from "react-icons/md";
 import { PiShareFat } from "react-icons/pi";
 interface ImagePreviewProps {
 	onClick: (data: ImageType) => void;
 	onClose: () => void;
 	data: ImageType;
 }
-const ImagePreview: React.FC<ImagePreviewProps> = ({
-	onClick,
-  onClose,
-	data,
-}) => {
+const ImagePreview: React.FC<ImagePreviewProps> = ({ onClick, onClose, data }) => {
 	const tags = useMemo(() => {
 		return data.tag
 			?.split(",")
 			.slice(0, 4)
 			.map((item) => (
-				<Tag
-					color={getRandomColor()}
-					key={item}
-					className="flex items-center gap-1 capitalize">
+				<Tag color={getRandomColor()} key={item} className='flex items-center gap-1 capitalize'>
 					{item}
 				</Tag>
 			));
-  }, [data.tag]);
+	}, [data.tag]);
 	return (
 		<div className='w-full h-fit p-1 flex flex-col hover:bg-neutral-50 rounded-md cursor-pointer relative'>
 			<div className='w-full h-fit relative image-preview'>
 				<Watermark content='Thesis'>
 					<Image
 						preview={{
-              movable: true,
-              minScale:0.3,
+							movable: true,
+							minScale: 0.3,
 							onVisibleChange(value) {
 								if (!value) onClose();
 								else onClick(data);
 							},
-            }}
-            
-            
+						}}
+						loading={"lazy"}
 						alt=''
 						className='!rounded-md !h-[400px] w-full object-cover'
-						src={IMAGE_PREFIX + "1/" + data.photoName.replaceAll(".jpg", "").replaceAll(".png", "")}
+            src={IMAGE_PREFIX + "1/" + data.photoName.replaceAll(".jpg", "").replaceAll(".png", "")}
+            
 					/>
 				</Watermark>
 

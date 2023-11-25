@@ -2,15 +2,15 @@
 import { getImageByFaceUpload, getImageByFaces } from "@/apis/face";
 import { getImageAll, getImageByTagsContains, getImageByTagsMatchAll } from "@/apis/get_image";
 import { InputTag } from "@/components/atoms";
-import { HeaderSearch, LoadFacesExisted, UploadFaces, UploadFiles } from "@/components/molercules";
-import { PreviewImages } from "@/components/organims";
+import { HeaderSearch, LoadFacesExisted, UploadFaces } from "@/components/molercules";
+import { PreviewImages, SearchByChatBot } from "@/components/organims";
 import { Button, Form, FormInstance, Segmented, Space, Spin, Switch, UploadFile } from "antd";
-import TextArea from "antd/es/input/TextArea";
 import { SegmentedValue } from "antd/es/segmented";
 import clsx from "clsx";
 import { xor } from "lodash";
 import React, { useEffect, useState } from "react";
 
+import { getImageSimilarUpload } from "@/apis/upload";
 import { closeGraphEdges, setGraphEdges } from "@/redux/features/graphedges";
 import { RootState } from "@/redux/store";
 import { BsTranslate } from "react-icons/bs";
@@ -29,6 +29,7 @@ const Page = () => {
 		faceExisted: false,
 	});
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
+	const [imageSimilar, setImageSimilar] = useState<UploadFile[]>([]);
 	const showGraph = useSelector((state: RootState) => state.graphedges.show);
 	const dispatch = useDispatch();
 
@@ -83,8 +84,7 @@ const Page = () => {
 					await getImageByFaceUpload("1", fileList)
 						.then((res) => {
 							const data = res.data;
-              if (data) {
-
+							if (data) {
 								setData(data[0].results);
 								dispatch(
 									setGraphEdges({
@@ -129,6 +129,27 @@ const Page = () => {
 							}, 1200);
 						});
 				}
+				break;
+			}
+			case "annoy": {
+				if (imageSimilar) {
+					setLoading(true);
+					await getImageSimilarUpload("1", imageSimilar[0])
+						.then((res) => {
+							const data = res.data;
+							if (data) {
+								setData(data);
+							}
+						})
+						.catch(() => {
+							setData([]);
+						})
+						.finally(() => {
+							setTimeout(() => {
+								setLoading(false);
+							}, 1200);
+						});
+				}
 			}
 		}
 	};
@@ -140,8 +161,7 @@ const Page = () => {
 		setMethods((curr: any) => ({ ...curr, isMatchAll: !!value }));
 	};
 
-  const onChangeFace = (value: boolean) => {
-
+	const onChangeFace = (value: boolean) => {
 		setMethods((curr: any) => ({ ...curr, faceExisted: !!value }));
 	};
 
@@ -170,7 +190,7 @@ const Page = () => {
 		}
 	}, [searchType]);
 	return (
-		<div className='flex flex-col h-full'>
+		<div className='flex flex-col h-full w-full'>
 			<HeaderSearch title='Search AI' />
 			<div className='flex-1 w-full h-full bg-white py-6 px-2 flex flex-col overflow-y-auto'>
 				<p className='text-xs uppercase text-black/50 px-4 py-2'>MODELS</p>
@@ -239,98 +259,102 @@ const Page = () => {
 						]}
 					/>
 				</Space>
-				<div className='flex items-center justify-start gap-4 p-4 min-h-[240px]'>
-					<Form
-						ref={formRef}
-						name='control-ref'
-						initialValues={{ remember: true }}
-						onFinish={(data)=>onSubmit(data)}
-						className='flex gap-4 items-center'>
-						{searchType === "tag" && (
-							<div className='flex flex-col gap-2'>
-								<div className='flex gap-2 items-center'>
-									<h3 className='text-xs uppercase text-black/50'>Match All Tags</h3>
-									<Switch
-										checked={methods.isMatchAll}
-										className='bg-gray-500 flex items-center'
-										onChange={onChangeContain}
-									/>
-								</div>
-								<Form.Item className='!mb-0' name='tags' label='' rules={[{ required: false }]}>
-									<InputTag onChange={onChangeTags} />
-								</Form.Item>
-							</div>
-						)}
-
-						{searchType === "transfomer" && (
-							<Form.Item className='!mb-0' name='transfomer' label='' rules={[{ required: false }]}>
-								<TextArea
-									className='!border-neutral-200 !w-[500px]'
-									rows={5}
-									placeholder='Enter promt'
-								/>
-							</Form.Item>
-						)}
-						{searchType === "face" && (
-							<Form.Item
-								className={clsx("!mb-0 h-fit min-h-[100px] mt-3", {
-									"w-[58%]": !!methods?.faceExisted,
-								})}
-								name='face'
-								label=''
-								rules={[{ required: false }]}>
-								<div className=' h-fit flex flex-col gap-2 py-3'>
+				{searchType !== "transfomer" && (
+					<div className='flex items-center justify-start gap-4 p-4 min-h-[240px]'>
+						<Form
+							ref={formRef}
+							name='control-ref'
+							initialValues={{ remember: true }}
+							onFinish={(data) => onSubmit(data)}
+							className='flex gap-4 items-center'>
+							{searchType === "tag" && (
+								<div className='flex flex-col gap-2'>
 									<div className='flex gap-2 items-center'>
-										<h3 className='text-xs uppercase text-black/50'>Faces Existed</h3>
+										<h3 className='text-xs uppercase text-black/50'>Match All Tags</h3>
 										<Switch
-											checked={methods.faceExisted}
+											checked={methods.isMatchAll}
 											className='bg-gray-500 flex items-center'
-											onChange={(checked) => {
-												onChangeFace(!!checked);
-											}}
+											onChange={onChangeContain}
 										/>
 									</div>
-									<div className='min-h-[100px] h-fit max-h-[220px] overflow-auto'>
-										<LoadFacesExisted
-											hidden={!methods?.faceExisted}
-											active={methods?.faces}
-											onActive={(name) => {
-												setMethods((curr: any) => ({
-													...curr,
-													faces: xor(curr.faces || [], [name]),
-												}));
-											}}
-										/>
+									<Form.Item className='!mb-0' name='tags' label='' rules={[{ required: false }]}>
+										<InputTag onChange={onChangeTags} />
+									</Form.Item>
+								</div>
+							)}
+
+							{searchType === "face" && (
+								<Form.Item
+									className={clsx("!mb-0 h-fit min-h-[100px] mt-3", {
+										"w-[58%]": !!methods?.faceExisted,
+									})}
+									name='face'
+									label=''
+									rules={[{ required: false }]}>
+									<div className=' h-fit flex flex-col gap-2 py-3'>
+										<div className='flex gap-2 items-center'>
+											<h3 className='text-xs uppercase text-black/50'>Faces Existed</h3>
+											<Switch
+												checked={methods.faceExisted}
+												className='bg-gray-500 flex items-center'
+												onChange={(checked) => {
+													onChangeFace(!!checked);
+												}}
+											/>
+										</div>
+										<div className='min-h-[100px] h-fit max-h-[220px] overflow-auto'>
+											<LoadFacesExisted
+												hidden={!methods?.faceExisted}
+												active={methods?.faces}
+												onActive={(name) => {
+													setMethods((curr: any) => ({
+														...curr,
+														faces: xor(curr.faces || [], [name]),
+													}));
+												}}
+											/>
+											<UploadFaces
+												hidden={!!methods?.faceExisted}
+												onChange={(files) => setFileList(files)}
+												fileList={fileList}
+											/>
+										</div>
+									</div>
+								</Form.Item>
+							)}
+
+							{searchType === "annoy" && (
+								<Form.Item className='!mb-0' name='face' label='' rules={[{ required: false }]}>
+									<div className='w-[400px] flex items-center justify-center'>
 										<UploadFaces
-											hidden={!!methods?.faceExisted}
-											onChange={(files) => setFileList(files)}
-											fileList={fileList}
+											fileList={imageSimilar}
+											onChange={(file) => {
+												setImageSimilar(file);
+											}}
+											size={1}
 										/>
 									</div>
-								</div>
-							</Form.Item>
-						)}
+								</Form.Item>
+							)}
 
-						{searchType === "annoy" && (
-							<Form.Item className='!mb-0' name='face' label='' rules={[{ required: false }]}>
-								<div className='w-[400px] flex items-center justify-center'>
-									<UploadFiles />
-								</div>
-							</Form.Item>
-						)}
+							{searchType !== "transfomer" && (
+								<Button
+									loading={loading}
+									htmlType='submit'
+									className='button-form !font-medium mt-6 flex items-center justify-center !bg-emerald-400 !text-white border-none px-8 !w-[140px]'>
+									Search
+								</Button>
+							)}
+						</Form>
+					</div>
+				)}
+				{searchType === "transfomer" && <SearchByChatBot />}
 
-						<Button
-							loading={loading}
-							htmlType='submit'
-							className='button-form !font-medium mt-6 flex items-center justify-center !bg-emerald-400 !text-white border-none px-8 !w-[140px]'>
-							Search
-						</Button>
-					</Form>
-				</div>
-
-				<p className='text-xs uppercase text-black/50 px-4 py-2'>
-					Search By <span className='uppercase'>{searchType}</span>
-				</p>
+				{searchType !== "transfomer" && (
+					<p className='text-xs uppercase text-black/50 px-4 py-2'>
+						Search By <span className='uppercase'>{searchType}</span>
+					</p>
+				)}
 				{loading ? (
 					<div className='flex-1 w-full flex items-center justify-center'>
 						<Spin
@@ -342,7 +366,9 @@ const Page = () => {
 						/>
 					</div>
 				) : (
-					<PreviewImages isSimilar={searchType === "annoy"} data={data} />
+					searchType !== "transfomer" && (
+						<PreviewImages isSimilar={searchType === "annoy"} data={data} />
+					)
 				)}
 			</div>
 		</div>
