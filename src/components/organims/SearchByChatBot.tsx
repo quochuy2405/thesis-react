@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { confirmPropmt, sendPrompt } from "@/apis/prompt";
 import {
-	Avatar,
-	Button,
-	Checkbox,
-	Col,
-	Empty,
-	Form,
-	FormInstance,
-	Row,
-	UploadFile,
-	message,
+  Avatar,
+  Button,
+  Checkbox,
+  Col,
+  Empty,
+  Form,
+  FormInstance,
+  Row,
+  UploadFile,
+  message,
 } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import TextArea from "antd/es/input/TextArea";
@@ -172,7 +172,7 @@ const SearchByChatBot = () => {
 		setChatMessages((prevMessages) => [...prevMessages, userQuestion]);
 		yield 1;
 		const text =
-			"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia accusamus natus animi est provident eius quibusdam quaerat fugiat vitae minima fugit quas sequi, eveniet quidem iure corporis totam. At, ad.";
+			"I've already understood your request. But I need your confirmation. Please confirm below...";
 		const botResponse = renderBotResponse(text);
 		setChatMessages((prevMessages) => [...prevMessages, botResponse]);
 
@@ -184,7 +184,8 @@ const SearchByChatBot = () => {
 	}
 
 	const onSubmit = async (data: { request: string }) => {
-		// setLoading(true);
+		setLoading(true);
+
 		if (!data.request) {
 			message.warning("Please enter prompt!");
 			setLoading(false);
@@ -198,10 +199,12 @@ const SearchByChatBot = () => {
 			.finally(() => {
 				setLoading(false);
 			});
+	
 		const gen = generateChat(data.request);
 		gen.next();
+
 		const text =
-			"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia accusamus natus animi est.";
+			"I've already understood your request. But I need your confirmation. Please confirm below...";
 		gen.next();
 
 		setTimeout(() => {
@@ -234,7 +237,7 @@ const SearchByChatBot = () => {
 					ref={formRef}
 					name='chat-ref'
 					className='!w-full flex items-center justify-between gap-4'
-					initialValues={{ remember: true }}
+					initialValues={{ remember: false }}
 					onFinish={(data) => onSubmit(data)}>
 					<Form.Item
 						className='!mb-0 !w-full'
