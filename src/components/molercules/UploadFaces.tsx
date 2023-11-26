@@ -15,11 +15,18 @@ const getBase64 = (file: RcFile): Promise<string> =>
 	});
 interface UploadFacesProps {
 	hidden?: boolean;
+	disabled?: boolean;
 	onChange: (fileList: UploadFile[]) => void;
   fileList: UploadFile[];
   size?:number
 }
-const UploadFaces: React.FC<UploadFacesProps> = ({ hidden=false, fileList, onChange, size=5 }) => {
+const UploadFaces: React.FC<UploadFacesProps> = ({
+	hidden = false,
+	fileList,
+	onChange,
+	size = 5,
+	disabled,
+}) => {
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState("");
 
@@ -58,6 +65,7 @@ const UploadFaces: React.FC<UploadFacesProps> = ({ hidden=false, fileList, onCha
 				listType='picture-circle'
 				fileList={fileList}
 				maxCount={size}
+				disabled={disabled}
 				onPreview={handlePreview}
 				onChange={handleChange}>
 				{fileList.length >= size ? null : uploadButton}

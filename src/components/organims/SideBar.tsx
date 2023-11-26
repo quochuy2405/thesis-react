@@ -144,8 +144,7 @@ const SideBar = () => {
 					mode='inline'
 					defaultSelectedKeys={[
 						items.find((item: any) => location.pathname === item.key)?.key || items[0].key,
-          ]}
-        
+					]}
 					items={items}
 				/>
 
@@ -155,7 +154,11 @@ const SideBar = () => {
 					items={[
 						{
 							key: "0",
-							icon: <IoMdLogOut size={18} />,
+							icon: (
+								<span className='flex items-center justify-center h-full w-full'>
+									<IoMdLogOut size={18} />
+								</span>
+							),
 							label: "Sign out",
 						},
 					]}
