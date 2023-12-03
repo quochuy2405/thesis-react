@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // CommentTree.js
 import { Avatar } from "antd";
-import { useState } from "react";
 
 const Comment = ({ comment }: any) => {
 	const { id, user, text, depth, children } = comment;
@@ -12,7 +11,7 @@ const Comment = ({ comment }: any) => {
 			{/* SVG Line */}
 
 			<div
-				className='w-[2px] mt-8 left-5 absolute bg-neutral-300'
+				className='w-[2px] mt-8 left-5 absolute bg-emerald-300'
 				style={{
 					height: `${children?.length * 40}px`,
 				}}></div>
@@ -23,12 +22,12 @@ const Comment = ({ comment }: any) => {
 				/>
 				{/* Comment Content */}
 				{!comment?.isTop && (
-					<div className='border-2 border-b-neutral-300 border-l-neutral-300 w-4 h-4 absolute -left-3 top-[5px] rounded-bl-md border-transparent'></div>
+					<div className='border-2 border-b-emerald-300 border-l-emerald-300 w-4 h-4 absolute -left-3 top-[5px] rounded-bl-md border-transparent'></div>
 				)}
 
 				<div
-					className={`bg-neutral-50 shadow-sm border border-neutral-100 p-2 pr-0 rounded-lg w-full ml-${marginLeft}`}>
-					<h2 className='font-semibold text-xs'>{user}</h2>
+					className={`bg-white border-b border-emerald-50/90 p-2 flex-col flex gap-2 pr-0 w-full ml-${marginLeft}`}>
+					<h2 className='font-semibold text-[10px]'>{user}</h2>
 					<p className='text-xs'>{text}</p>
 				</div>
 			</div>
@@ -44,31 +43,25 @@ const Comment = ({ comment }: any) => {
 		</div>
 	);
 };
-const CommentTree = () => {
-	const [comments] = useState([
-		{
-			id: 1,
-			user: "User1",
-			text: "Comment 1",
-			isTop: 1,
-			depth: 0,
-			children: [
-				{
-					id: 2,
-					user: "User2",
-					text: "Reply to Comment 1",
-					depth: 1,
-					children: [{ id: 3, user: "User3", text: "Reply to Reply 1", depth: 2 }],
-				}
-			],
-		},
-		{ id: 4, isTop: 1, user: "User4", text: "Comment 2", depth: 0 },
-	]);
+interface CommentTreeProps {
+	comments: any;
+	isCollape: boolean;
+	size?: number;
+	onShowMore: () => void;
+}
+const CommentTree: React.FC<CommentTreeProps> = ({ comments, isCollape, size, onShowMore }) => {
 	return (
 		<div className='space-y-4'>
-			{comments.map((comment) => (
+			{comments?.slice(0, isCollape ? size : -1).map((comment: any) => (
 				<Comment key={comment.id} comment={comment} />
 			))}
+			{
+				<div
+					onClick={onShowMore}
+					className='p-2 rounded-lg w-fit h-8 flex text-[10px] m-auto items-center justify-center hover:bg-neutral-100 cursor-pointer'>
+					{!isCollape ? "Show more ..." : "... Minize"}
+				</div>
+			}
 		</div>
 	);
 };

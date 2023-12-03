@@ -1,7 +1,8 @@
-import { Avatar, Dropdown, MenuProps } from "antd";
+import { Avatar, Dropdown, Image, MenuProps } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import clsx from "clsx";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { AiFillDelete } from "react-icons/ai";
 import { BsDot } from "react-icons/bs";
 import { CgLockUnlock } from "react-icons/cg";
@@ -14,6 +15,32 @@ import CommentTree from "./CommentTree";
 
 const PostItem = () => {
 	const [like, setLike] = useState(false);
+	const [isCollape, setIsCollape] = useState(false);
+	const post = useForm({
+		defaultValues: {
+			message: "",
+		},
+	});
+	const [comments, setComments] = useState([
+		{
+			id: 1,
+			user: "User1",
+			text: "Comment 1",
+			isTop: 1,
+			depth: 0,
+			children: [
+				{
+					id: 2,
+					user: "User2",
+					text: "Reply to Comment 1",
+					depth: 1,
+					children: [{ id: 3, user: "User3", text: "Reply to Reply 1", depth: 2 }],
+				},
+			],
+		},
+		{ id: 4, isTop: 1, user: "User4", text: "Comment 2", depth: 0 },
+	]);
+
 	const items: MenuProps["items"] = [
 		{
 			label: "Private",
@@ -34,6 +61,13 @@ const PostItem = () => {
 		items,
 		onClick: handleMenuClick,
 	};
+	const onSend = useCallback((data: { message: string }) => {
+		post.reset({});
+		setComments((curr) => [
+			...curr,
+			{ id: 5, isTop: 1, user: "User4", text: data.message, depth: 0 },
+		]);
+	}, []);
 
 	return (
 		<div className='flex flex-col gap-4 max-w-lg w-[540px] m-auto'>
@@ -57,9 +91,10 @@ const PostItem = () => {
 					</div>
 				</Dropdown>
 			</div>
-			<img
+			<Image
 				src='https://i.pinimg.com/564x/b6/a9/ec/b6a9ecef2355335acdc15679353b2006.jpg'
-				className='w-full h-[600px] object-contain shadow-sm border border-neutral-100 bg-white rounded-lg'></img>
+				className='w-full !h-[600px] object-contain shadow-sm border border-neutral-100 bg-white rounded-lg'
+				alt=''></Image>
 			<div className='flex gap-3'>
 				<span
 					className={clsx(
@@ -103,19 +138,35 @@ const PostItem = () => {
 
 				<p className='font-semibold text-xs pl-2'>11 likes</p>
 			</div>
-			<CommentTree />
-			<div className='flex items-center gap-3'>
-				<TextArea
-					placeholder='Enter comment...'
-					maxLength={200}
-					className=' !outline-none py-3 !rounded-md  !rounded-b-none !ring-0 !border-0 !border-neutral-200 !border-b !text-xs'
-					autoSize={{ minRows: 2, maxRows: 4 }}
-					showCount
+			<CommentTree
+				isCollape={isCollape}
+				comments={comments}
+				onShowMore={() => setIsCollape((curr) => !curr)}
+			/>
+			<form className='flex items-center gap-3' onSubmit={post.handleSubmit(onSend)}>
+				<Controller
+					name='message'
+					defaultValue=''
+					control={post.control}
+					rules={{ required: true }}
+					render={({ field }) => (
+						<TextArea
+							placeholder='Enter comment...'
+							maxLength={200}
+							value={field.value}
+							onChange={field.onChange}
+							className=' !outline-none py-3 !rounded-md  !rounded-b-none !ring-0 !border-0 !border-neutral-200 !border-b !text-xs'
+							autoSize={{ minRows: 2, maxRows: 4 }}
+							showCount
+						/>
+					)}
 				/>
-				<span className='p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-white hover:shadow-md cursor-pointer transition-all ease-linear duration-200'>
+				<button
+					type='submit'
+					className='p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-white hover:shadow-md cursor-pointer transition-all ease-linear duration-200'>
 					<VscSend size={14} />
-				</span>
-			</div>
+				</button>
+			</form>
 		</div>
 	);
 };

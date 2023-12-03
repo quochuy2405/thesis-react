@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { closeGuide } from "@/redux/features/guide";
+import { RootState } from "@/redux/store";
 import { Layout, Menu, Tour, TourProps } from "antd";
-import { GiAbstract042 } from "react-icons/gi";
+import { useRef } from "react";
 import { FaTrash } from "react-icons/fa";
+import { GiAbstract042 } from "react-icons/gi";
 import { HiMiniFolder } from "react-icons/hi2";
 import { IoMdLogOut } from "react-icons/io";
 import { IoAnalytics, IoSearch } from "react-icons/io5";
 import { TbLockSquareRoundedFilled } from "react-icons/tb";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
 
 const SideBar = () => {
 	const navigate = useNavigate();
@@ -16,7 +19,8 @@ const SideBar = () => {
 	const ref1 = useRef<HTMLDivElement>(null);
 	const ref2 = useRef<HTMLDivElement>(null);
 	const ref3 = useRef<HTMLDivElement>(null);
-	const [open, setOpen] = useState<boolean>(false);
+	const open = useSelector((state: RootState) => state.guide);
+	const dispatch = useDispatch();
 
 	const steps: TourProps["steps"] = [
 		{
@@ -34,16 +38,25 @@ const SideBar = () => {
 					boxShadow: "inset 0 0 15px #fff",
 				},
 			},
+			onClose() {
+				dispatch(closeGuide());
+			},
 		},
 		{
 			title: "Save",
 			description: "Save your changes.",
 			target: () => ref2.current!,
+			onClose() {
+				dispatch(closeGuide());
+			},
 		},
 		{
 			title: "Other Actions",
 			description: "Click to see other actions.",
 			target: () => ref3.current!,
+			onFinish() {
+				dispatch(closeGuide());
+			},
 		},
 	];
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -131,7 +144,9 @@ const SideBar = () => {
 				</div>
 				<Tour
 					open={open}
-					onClose={() => setOpen(false)}
+					onClose={() => {
+						dispatch(closeGuide());
+					}}
 					steps={steps}
 					indicatorsRender={(current, total) => (
 						<span>
