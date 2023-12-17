@@ -4,12 +4,11 @@ import { closeGuide } from "@/redux/features/guide";
 import { RootState } from "@/redux/store";
 import { Layout, Menu, Tour, TourProps } from "antd";
 import { useRef } from "react";
+import { BsCameraFill } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
-import { GiAbstract042 } from "react-icons/gi";
 import { HiMiniFolder } from "react-icons/hi2";
 import { IoMdLogOut } from "react-icons/io";
 import { IoAnalytics, IoSearch } from "react-icons/io5";
-import { TbLockSquareRoundedFilled } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -65,7 +64,7 @@ const SideBar = () => {
 			key: "/thesis",
 			icon: (
 				<span ref={ref1} className='flex items-center justify-center h-full w-full'>
-					<GiAbstract042 size={18} />
+					<BsCameraFill size={18} />
 				</span>
 			),
 			label: "All",
@@ -97,18 +96,6 @@ const SideBar = () => {
 			label: "Folder manager",
 			onClick: () => {
 				navigate("/thesis/manage");
-			},
-		},
-		{
-			key: "/thesis/private",
-			icon: (
-				<span className='flex items-center justify-center h-full w-full'>
-					<TbLockSquareRoundedFilled size={30} />
-				</span>
-			),
-			label: "Private",
-			onClick: () => {
-				navigate("/thesis/private");
 			},
 		},
 		{
