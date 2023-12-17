@@ -13,12 +13,17 @@ import { VscLoading } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { createFolderFromDirectory, getAllFolderByUserId } from "../../apis/folder";
 import { DirectoryRow } from "../molercules";
+import { CgMoveDown } from "react-icons/cg";
+import { openMove } from "@/redux/features/onmove";
 
 const LoadAllFolderByUserId = () => {
 	const [loading, setLoading] = useState(true);
+
 	const [messageApi, contextHolder] = message.useMessage({ maxCount: 1 });
 	const [openNewDir, setOpenNewDir] = useState(false);
 	const directory = useSelector((state: RootState) => state.directory.currentPath);
+	const move = useSelector((state: RootState) => state.onmove.show);
+	const fileMove = useSelector((state: RootState) => state.filemove);
 	const directoriesTree = useSelector((state: RootState) => state.directory.directoriesTree);
 	const dispatch = useDispatch();
 	const refDirectories = useRef<object>({});
@@ -42,7 +47,10 @@ const LoadAllFolderByUserId = () => {
 			.then(({ data }) => {
 				const disecs = data
 					?.filter((item: PhotoDirectory) => !!item.photoDirectory?.startsWith("/"))
-					.map((_item: PhotoDirectory) => _item.photoDirectory.replace(FOLDER_PREFIX, ""));
+					?.map((_item: PhotoDirectory) => {
+						if (_item.photoDirectory + "/" === FOLDER_PREFIX) return "";
+						return _item.photoDirectory.replace(FOLDER_PREFIX, "");
+					});
 
 				const tree: any = arrayToTree(disecs, "/");
 				refDirectories.current = tree;
@@ -58,11 +66,23 @@ const LoadAllFolderByUserId = () => {
 			.then(({ data }) => {
 				const disecs = data
 					?.filter((item: PhotoDirectory) => !!item.photoDirectory?.startsWith("/"))
-					.map((_item: PhotoDirectory) => _item.photoDirectory);
-
+					?.map((_item: PhotoDirectory) => {
+						if (_item.photoDirectory + "/" === FOLDER_PREFIX) return "";
+						return _item.photoDirectory.replace(FOLDER_PREFIX, "");
+					});
 				const tree: any = arrayToTree(disecs, "/");
 				refDirectories.current = tree;
-				dispatch(setDirectoriesCurrent(directoriesTree));
+
+				refDirectories.current = tree;
+				const namesDir = directory.split("/").filter((item: string) => !!item);
+				let dirRefreshTree = tree;
+
+				if (namesDir.length)
+					namesDir.forEach((name: string) => {
+						dirRefreshTree = dirRefreshTree[name];
+					});
+				dispatch(setDirectory(directory));
+				dispatch(setDirectoriesCurrent(dirRefreshTree));
 			})
 			.finally(() => setLoading(false));
 	};
@@ -77,15 +97,16 @@ const LoadAllFolderByUserId = () => {
 			return;
 		}
 
-		let path = directoryNew;
+		let path = FOLDER_PREFIX + directoryNew;
 		if (directory.length > 1) {
-			path = [directory, directoryNew].join("/");
+			path = FOLDER_PREFIX + [directory, directoryNew].join("/");
 		}
 		await createFolderFromDirectory({
 			userId: 1,
 			newDir: path,
 		}).finally(() => {
 			onCancelDir();
+			refresh();
 		});
 	};
 	const onError = () => {
@@ -105,6 +126,13 @@ const LoadAllFolderByUserId = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	useEffect(() => {
+		if (!move) {
+			refresh();
+		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [move]);
 	return (
 		<div className='flex flex-col gap-3 h-fit max-h-[50vh]'>
 			{contextHolder}
@@ -155,6 +183,17 @@ const LoadAllFolderByUserId = () => {
 					]}
 				/>
 				<div className='flex items-center gap-4 '>
+					{!!fileMove.length && (
+						<Button
+							icon={<CgMoveDown size={16} />}
+							onClick={() => {
+								dispatch(openMove());
+							}}
+							className='font-normal items-center flex justify-center text-xs !rounded-lg'>
+							Move All
+						</Button>
+					)}
+
 					<Button
 						// icon={<MdRestore size={16} />}
 						onClick={() => setOpenNewDir(true)}
@@ -188,14 +227,15 @@ const LoadAllFolderByUserId = () => {
 
 				{!loading &&
 					Object?.keys(directoriesTree)?.map((name) => {
-            const isFolder = !!directoriesTree[name] || !name.split('.')?.[1];
-            console.log('first', name.split('.')?.[1])
-            console.log('name', name)
+						const isFolder = !!directoriesTree[name] || !name.split(".")?.[1];
+
+						if (!name) return;
 						return (
 							<DirectoryRow
 								key={name}
-                name={name}
-                disabled={!name.split('.')?.[1] && !directoriesTree[name] }
+								name={name}
+								refresh={refresh}
+								disabled={!name.split(".")?.[1] && !directoriesTree[name]}
 								isFolder={isFolder}
 								onClick={() => {
 									// eslint-disable-next-line no-extra-boolean-cast

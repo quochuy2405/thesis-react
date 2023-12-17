@@ -33,7 +33,7 @@ const FolderStorageItem: React.FC<FolderStorageItemProps> = () => {
 	];
 	const handleMenuClick: MenuProps["onClick"] = (e) => {
 		// message.info("Click on menu item.");
-		dispatch(openMove("haha"));
+		dispatch(openMove());
 		console.log("click", e);
 	};
 	const menuProps = {

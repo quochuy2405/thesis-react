@@ -4,7 +4,7 @@ import { Avatar, Badge, Layout } from "antd";
 import { BiUser } from "react-icons/bi";
 import { IoMdNotifications } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { UploadFiles } from "../molercules";
+import { BuildGNN, UploadFiles } from "../molercules";
 
 const SideOption = () => {
 	const files = useSelector((state: RootState) => state.fileprogress.files);
@@ -50,7 +50,7 @@ const SideOption = () => {
 						multiple
 					/>
 				</div>
-				{/* <BuildGNN /> */}
+				<BuildGNN />
 			</div>
 		</Layout.Sider>
 	);

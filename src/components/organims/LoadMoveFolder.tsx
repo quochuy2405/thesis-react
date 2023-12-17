@@ -1,21 +1,29 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { pushDirectoryMove, setDirectoriesCurrent, setDirectoryMove } from "@/redux/features/directorymove";
+import { FOLDER_PREFIX } from "@/constants/index";
+import {
+  pushDirectoryMove,
+  setDirectoriesCurrent,
+  setDirectoryMove,
+} from "@/redux/features/directorymove";
+import { closeMove } from "@/redux/features/onmove";
 import { RootState } from "@/redux/store";
 import { PhotoDirectory } from "@/types/image";
-import { arrayToTree } from "@/utils/common";
-import { Breadcrumb, Button, Spin } from "antd";
+import { arrayToTree, refactorPath } from "@/utils/common";
+import { Breadcrumb, Button, Spin, message } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { VscLoading } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllFolderByUserId } from "../../apis/folder";
-import { DirectoryRow } from "../molercules";
+import { getAllFolderByUserId, moveFolderFromDirectory } from "../../apis/folder";
+import { DirectoryRowMove } from "../molercules";
 
 const LoadMoveFolder = () => {
 	const [loading, setLoading] = useState(true);
 	const directoryMove = useSelector((state: RootState) => state.directorymove.currentPath);
+	const directory = useSelector((state: RootState) => state.directory.currentPath);
 	const directoriesTree = useSelector((state: RootState) => state.directorymove.directoriesTree);
+	const fileMoves = useSelector((state: RootState) => state.filemove) as Array<string>;
 	const dispatch = useDispatch();
 	const refDirectories = useRef<object>({});
 
@@ -33,7 +41,10 @@ const LoadMoveFolder = () => {
 			.then(({ data }) => {
 				const disecs = data
 					?.filter((item: PhotoDirectory) => !!item.photoDirectory?.startsWith("/"))
-					.map((_item: PhotoDirectory) => _item.photoDirectory);
+					?.map((_item: PhotoDirectory) => {
+						if (_item.photoDirectory + "/" === FOLDER_PREFIX) return "";
+						return _item.photoDirectory.replace(FOLDER_PREFIX, "");
+					});
 
 				const tree: any = arrayToTree(disecs, "/");
 				refDirectories.current = tree;
@@ -49,17 +60,40 @@ const LoadMoveFolder = () => {
 			.then(({ data }) => {
 				const disecs = data
 					?.filter((item: PhotoDirectory) => !!item.photoDirectory?.startsWith("/"))
-					.map((_item: PhotoDirectory) => _item.photoDirectory);
+					?.map((_item: PhotoDirectory) => {
+						if (_item.photoDirectory + "/" === FOLDER_PREFIX) return "";
+						return _item.photoDirectory.replace(FOLDER_PREFIX, "");
+					});
 
 				const tree: any = arrayToTree(disecs, "/");
 				refDirectories.current = tree;
-				dispatch(setDirectoriesCurrent(tree));
+				const namesDir = directoryMove.split("/").filter((item: string) => !!item);
+				let dirRefreshTree = tree;
+
+				if (namesDir.length)
+					namesDir.forEach((name: string) => {
+						dirRefreshTree = dirRefreshTree[name];
+					});
+				dispatch(setDirectoryMove(directoryMove));
+				dispatch(setDirectoriesCurrent(dirRefreshTree));
 			})
 			.finally(() => setLoading(false));
 	};
+
+	const onMove = (name: string) => {
+		const newDirectory = refactorPath(directoryMove, name);
+		const data = {
+			userId: 1,
+			oldDirectory: fileMoves,
+			newDirectory: newDirectory,
+		};
+		moveFolderFromDirectory(data).then(async () => {
+			dispatch(closeMove());
+			message.success("Move completed!");
+		});
+	};
 	useEffect(() => {
 		fetch();
-	
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -125,20 +159,31 @@ const LoadMoveFolder = () => {
 				)}
 
 				{!loading &&
-					Object?.keys(directoriesTree)?.map((name) => (
-						<DirectoryRow
-							key={name}
-							name={name}
-							isFolder={!!directoriesTree[name]}
-							onClick={() => {
-								// eslint-disable-next-line no-extra-boolean-cast
-								if (!!directoriesTree[name]) dispatch(pushDirectoryMove(name));
-							}}
-						/>
-					))}
+					Object?.keys(directoriesTree)?.map((name) => {
+						const isFolder = !!directoriesTree[name] || !name.split(".")?.[1];
+						const dir = FOLDER_PREFIX + [directory, name].join("/");
+						const regex = /\/+/g;
+						const dirName = dir.replaceAll(regex, "/");
+						const isExisted = fileMoves.includes(dirName);
+						if (!name || isExisted) return;
+						return (
+							<DirectoryRowMove
+								key={name}
+								name={name}
+								refresh={refresh}
+								disabled={!name.split(".")?.[1] && !directoriesTree[name]}
+								isFolder={isFolder}
+								onMove={onMove}
+								onClick={() => {
+									// eslint-disable-next-line no-extra-boolean-cast
+									if (!!directoriesTree[name]) dispatch(pushDirectoryMove(name));
+								}}
+							/>
+						);
+					})}
 			</div>
 		</div>
 	);
 };
 
-export default (LoadMoveFolder);
+export default LoadMoveFolder;

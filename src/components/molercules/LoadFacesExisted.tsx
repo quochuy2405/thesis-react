@@ -36,19 +36,13 @@ const LoadFacesExisted: React.FC<LoadFacesExistedProps> = ({ hidden, active, onA
 					<Avatar
 						key={item.photoName}
 						className={clsx("cursor-pointer", {
-							"border-2 border-emerald-400": active?.includes(
-								item.photoName?.replaceAll(".png", "")?.replaceAll(".jpg", "")
-							),
+							"border-2 border-emerald-400": active?.includes(item.photoName),
 						})}
-						onClick={() => onActive(item.photoName?.replaceAll(".png", "")?.replaceAll(".jpg", ""))}
+						onClick={() => onActive(item.photoName)}
 						size={100.4}
 						alt={item.photoName}
 						// src={"sftp://root@14.225.203.193" + item.photoDirectory}
-						src={
-							IMAGE_PREFIX_CROP +
-							"1/" +
-							item.photoName.replaceAll(".png", "")?.replaceAll(".jpg", "")
-						}
+						src={IMAGE_PREFIX_CROP + "1/" + item.photoName}
 					/>
 				</Tooltip>
 			))}

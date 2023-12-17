@@ -4,16 +4,15 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthLayout from "./layouts/auth";
 import LayoutMain from "./layouts/main";
 import {
-	Analysis,
-	Error,
-	FolderManage,
-	GetStated,
-	Manage,
-	Private,
-	SearchAI,
-	Sign,
-	Social,
-	Trash,
+  Analysis,
+  Error,
+  FolderManage,
+  GetStated,
+  Manage,
+  Public,
+  SearchAI,
+  Sign,
+  Trash
 } from "./pages";
 import "./styles/global.css";
 const router = createBrowserRouter([
@@ -54,22 +53,12 @@ const router = createBrowserRouter([
 					},
 					{
 						path: "/thesis",
-						element: <Social />,
-						errorElement: <Error />,
-					},
-					{
-						path: "/thesis/private",
-						element: <Private />,
+						element: <Public />,
 						errorElement: <Error />,
 					},
 					{
 						path: "/thesis/search",
 						element: <SearchAI />,
-						// errorElement: <Error />,
-					},
-					{
-						path: "/thesis/social",
-						element: <Social />,
 						errorElement: <Error />,
 					},
 					{

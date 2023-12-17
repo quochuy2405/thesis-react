@@ -12,6 +12,7 @@ export { default as TableFolder } from "./TableFolder";
 export { default as TableRecent } from "./TableRecent";
 export { default as HeaderStory } from "./HeaderStory";
 export { default as DirectoryRow } from "./DirectoryRow";
+export { default as DirectoryRowMove } from "./DirectoryRowMove";
 export { default as TableTrash } from "./TableTrash";
 export { default as LoadFacesExisted } from "./LoadFacesExisted";
 export { default as DrawerSimilar } from "./DrawerSimilar";

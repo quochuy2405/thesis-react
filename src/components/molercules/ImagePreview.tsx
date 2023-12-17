@@ -116,7 +116,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ onClick, onClose, data }) =
 						loading={"lazy"}
 						alt=''
 						className='!rounded-md !h-[400px] w-full object-cover'
-						src={IMAGE_PREFIX + "1/" + data.photoName.replaceAll(".jpg", "").replaceAll(".png", "")}
+						src={IMAGE_PREFIX + "1/" + data.photoName}
 					/>
 				</Watermark>
 

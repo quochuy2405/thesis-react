@@ -8,6 +8,7 @@ import loading from "./features/loading";
 import onmove from "./features/onmove";
 import storage from "./features/storage";
 import guide from "./features/guide";
+import filemove from "./features/filemove";
 
 export const store = configureStore({
 	reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
 		graphedges,
 		onmove,
 		guide,
+		filemove,
 	},
 	middleware: getDefaultMiddleware({
 		serializableCheck: false,

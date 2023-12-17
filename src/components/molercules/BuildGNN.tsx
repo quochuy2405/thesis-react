@@ -3,7 +3,7 @@ import { buildGraphGNN, cropFaces, prepareDataGraphGNN } from "@/apis/detect";
 import { useEffect, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { closeTrain } from "@/redux/features/detect";
+import { closeTrain, startTrain } from "@/redux/features/detect";
 import { RootState } from "@/redux/store";
 type StatusType = {
 	items: Array<{ title: string }>;
@@ -26,7 +26,7 @@ const BuildGNN = () => {
 	};
 
 	const process = async () => {
-		//   dispatch(startTrain());
+		dispatch(startTrain());
 		setStatus((curr) => ({
 			...curr,
 			pending: `Analysis face detecting...`,

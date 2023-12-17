@@ -11,9 +11,9 @@ export const moveSlice = createSlice({
 	name: "move",
 	initialState,
 	reducers: {
-		openMove: (state, { payload }) => {
+		openMove: (state) => {
 			state.show = true;
-			state.name = payload;
+
 			return state;
 		},
 		closeMove: (state) => {

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FOLDER_PREFIX } from "../constants";
+
 const lightColorPalette = [
 	"#F9B572",
 	"#FFDFDF",
@@ -20,9 +23,7 @@ const lightColorPalette = [
 ];
 
 export function getRandomColor() {
-	return lightColorPalette[
-		Math.floor(Math.random() * lightColorPalette.length)
-	];
+	return lightColorPalette[Math.floor(Math.random() * lightColorPalette.length)];
 }
 
 export function bytesToGB(bytes: number) {
@@ -35,9 +36,7 @@ export const arrayToTree = (folders: Array<string>, prefix: string) => {
 
 	folders.forEach((path) => {
 		// Remove the specified prefix
-		const pathWithoutPrefix = path.startsWith(prefix)
-			? path.substring(prefix.length)
-			: path;
+		const pathWithoutPrefix = path.startsWith(prefix) ? path.substring(prefix.length) : path;
 
 		const pathParts = pathWithoutPrefix.split("/");
 		let currentLevel: any = tree;
@@ -67,4 +66,10 @@ export const getObjectByPath = (path: string, tree: object) => {
 	}
 
 	return currentLevel; // Return null if the path is not found
+};
+
+export const refactorPath = (directory: string, name: string) => {
+	const dir = FOLDER_PREFIX + [directory, name].join("/");
+	const regex = /\/+/g;
+	return dir.replaceAll(regex, "/");
 };

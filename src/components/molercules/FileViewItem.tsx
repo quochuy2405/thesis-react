@@ -41,7 +41,7 @@ const FolderStorageItem: React.FC<FolderStorageItemProps> = ({ file }) => {
 			label: "Move",
 			key: "1",
 			icon: <GiMove />,
-			onClick: () => dispatch(openMove("haha")),
+			onClick: () => dispatch(openMove()),
 		},
 		{
 			label: "Private",

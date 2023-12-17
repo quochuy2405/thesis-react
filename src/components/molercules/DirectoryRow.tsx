@@ -1,7 +1,9 @@
-import { setDirectoriesCurrent, setDirectoriesTree } from "@/redux/features/directorymove";
+import { deleteFolderFromDirectory } from "@/apis/folder";
+import { addFileMove, removeFileMove } from "@/redux/features/filemove";
 import { openMove } from "@/redux/features/onmove";
 import { RootState } from "@/redux/store";
-import { Dropdown, MenuProps } from "antd";
+import { refactorPath } from "@/utils/common";
+import { Checkbox, Dropdown, MenuProps, message } from "antd";
 import clsx from "clsx";
 import moment from "moment";
 import React from "react";
@@ -15,9 +17,10 @@ import { HiDocumentText } from "react-icons/hi2";
 import { useDispatch, useSelector } from "react-redux";
 interface DirectoryRowProps {
 	name: string;
-	onClick: () => void;
 	isFolder: boolean;
 	disabled: boolean;
+	onClick: () => void;
+	refresh: () => void;
 }
 const IconByType: Record<string, React.ReactNode> = {
 	img: <BsImage size={20} color='#00DFA2' />,
@@ -37,10 +40,12 @@ const DirectoryRow: React.FC<DirectoryRowProps> = ({
 	isFolder,
 	disabled = false,
 	onClick,
+	refresh,
 }) => {
 	const lastFile = name.slice(-3).toLocaleLowerCase() as keyof typeof typeDefine;
 	const directory = useSelector((state: RootState) => state.directory.currentPath);
-	const directoriesTree = useSelector((state: RootState) => state.directory.directoriesTree);
+	const fileMoves = useSelector((state: RootState) => state.filemove) as Array<string>;
+	const dir = refactorPath(directory, name);
 	const dispatch = useDispatch();
 	const items: MenuProps["items"] = [
 		{
@@ -48,9 +53,8 @@ const DirectoryRow: React.FC<DirectoryRowProps> = ({
 			key: "1",
 			icon: <GiMove />,
 			onClick: () => {
-				dispatch(openMove("haha"));
-				dispatch(setDirectoriesCurrent(directory));
-				dispatch(setDirectoriesTree(directoriesTree));
+				dispatch(openMove());
+				dispatch(addFileMove(dir));
 			},
 		},
 		{
@@ -63,29 +67,53 @@ const DirectoryRow: React.FC<DirectoryRowProps> = ({
 			key: "3",
 			icon: <AiFillDelete />,
 			danger: true,
+			onClick: async () => {
+				deleteFolderFromDirectory({
+					delDir: refactorPath(directory, name),
+					userId: 1,
+				})
+					.then(() => {
+						message.success("Deleted");
+					})
+					.finally(() => {
+						refresh();
+					});
+			},
 		},
 	];
-	const handleMenuClick: MenuProps["onClick"] = (e) => {
-		// message.info("Click on menu item.");
-		console.log("click", e);
-	};
+
 	const menuProps = {
 		items,
-		onClick: handleMenuClick,
 	};
+
 	return (
 		<div
 			className={clsx(
-				"flex transition-opacity h-[40px] min-h-[40px] w-full bg-neutral-50/30 hover:bg-neutral-100 items-center px-4 rounded-md cursor-pointer gap-2",
-				{
-					"opacity-60 cursor-not-allowed": disabled,
-				}
+				"flex transition-opacity h-[40px] min-h-[40px] w-full bg-neutral-50/30 hover:bg-neutral-100 items-center px-4 rounded-md cursor-pointer gap-2"
 			)}
 			onClick={onClick}>
+			<Checkbox
+				checked={fileMoves.includes(dir)}
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				onClick={(e: any) => {
+					e.stopPropagation();
+
+					if (e.target.checked) {
+						dispatch(addFileMove(dir));
+					} else {
+						dispatch(removeFileMove(dir));
+					}
+				}}
+			/>
 			{isFolder && <FcFolder size={20} />}
 			{!isFolder && IconByType[typeDefine[lastFile]]}
 
-			<p className='flex-1 text-sm font-medium uppercase hover:text-emerald-600'>{name}</p>
+			<p
+				className={clsx("flex-1 text-sm font-medium uppercase hover:text-emerald-600", {
+					"opacity-60 cursor-not-allowed": disabled,
+				})}>
+				{name}
+			</p>
 			<p>{moment().format("DD/MM/YYYY HH:SS")}</p>
 			<div
 				onClick={(e) => {

@@ -69,14 +69,13 @@ const GraphEdges = () => {
 				const angle = (index / data.nodes.length) * 2 * Math.PI; // Calculate the angle based on the index
 				const x = centerX + radius * Math.cos(angle);
 				const y = centerY + radius * Math.sin(angle);
-				const isNode = item.node.includes("crop");
+				const isNode = item.node.includes("face");
 				const keyNode = isNode ? "nodemain" : "noderelated";
 				const typeText = isNode ? "Faces" : "Related image";
         
 				const url = isNode
-					? IMAGE_PREFIX_CROP + "1/" + item.node.replaceAll(".jpg", "").replaceAll(".png", "")
-					: IMAGE_PREFIX + "1/" + item.node.replaceAll(".jpg", "").replaceAll(".png", "");
-        
+					? IMAGE_PREFIX_CROP + "1/" + item.node
+					: IMAGE_PREFIX + "1/" + item.node;
 				NodeTypes = {
 					...NodeTypes,
 					[keyNode + index]: {
@@ -144,7 +143,8 @@ const GraphEdges = () => {
 				nodeKey={NODE_KEY}
 				nodes={graph.nodes}
 				edges={graph.edges}
-				edgeArrowSize={1}
+        edgeArrowSize={1}
+        minZoom={0}
 				nodeTypes={config}
 				nodeSubtypes={NodeSubtypes}
 				edgeTypes={EdgeTypes}
