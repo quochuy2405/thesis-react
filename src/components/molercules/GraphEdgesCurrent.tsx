@@ -62,9 +62,8 @@ const GraphEdges: React.FC = () => {
 	const EdgeTypes = GraphConfig.EdgeTypes;
 	const radius = 500; // Adjust the radius of the circle as needed
 	const centerX = 150; // Adjust the x-coordinate of the circle center
-  const centerY = 150; // Adjust the y-coordinate of the circle center
+	const centerY = 150; // Adjust the y-coordinate of the circle center
 
-  
 	const fetch = async () => {
 		let NodeTypes = { ...config };
 		const nodes = data.nodes.map((item: any, index: any) => {
@@ -142,7 +141,7 @@ const GraphEdges: React.FC = () => {
 	useEffect(() => {
 		fetch();
 	}, []);
-  if (!show) return <></>;
+	if (!show) return <></>;
 	return (
 		<>
 			<GraphView

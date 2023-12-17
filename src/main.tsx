@@ -1,10 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import AuthLayout from './layouts/auth';
-import LayoutMain from './layouts/main';
-import { Analysis, Error, GetStated, Manage, Private, SearchAI, Sign, Social, Trash } from './pages';
-import './styles/global.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import AuthLayout from "./layouts/auth";
+import LayoutMain from "./layouts/main";
+import {
+	Analysis,
+	Error,
+	FolderManage,
+	GetStated,
+	Manage,
+	Private,
+	SearchAI,
+	Sign,
+	Social,
+	Trash,
+} from "./pages";
+import "./styles/global.css";
 const router = createBrowserRouter([
 	{
 		path: "",
@@ -37,6 +48,11 @@ const router = createBrowserRouter([
 						errorElement: <Error />,
 					},
 					{
+						path: "/thesis/manage/:folder_name",
+						element: <FolderManage />,
+						errorElement: <Error />,
+					},
+					{
 						path: "/thesis",
 						element: <Social />,
 						errorElement: <Error />,
@@ -66,7 +82,6 @@ const router = createBrowserRouter([
 		],
 	},
 ]);
-
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>

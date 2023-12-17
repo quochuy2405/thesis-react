@@ -6,11 +6,13 @@ import { CgLockUnlock } from "react-icons/cg";
 import { FcFolder } from "react-icons/fc";
 import { GiMove } from "react-icons/gi";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 type FolderStorageItemProps = {
 	name?: string;
 };
 const FolderStorageItem: React.FC<FolderStorageItemProps> = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const items: MenuProps["items"] = [
 		{
 			label: "Move",
@@ -39,10 +41,14 @@ const FolderStorageItem: React.FC<FolderStorageItemProps> = () => {
 		onClick: handleMenuClick,
 	};
 
+	const openFolder = () => {
+		navigate(`/thesis/manage/203926`);
+	};
+
 	return (
 		<div className='ring-1 ring-gray-400/60 rounded-md flex justify-between w-full p-3 '>
 			<div className='flex flex-col gap-2'>
-				<div className='flex items-center gap-1 cursor-pointer py-2'>
+				<div className='flex items-center gap-1 cursor-pointer py-2' onClick={openFolder}>
 					<FcFolder size={20} />
 					<p className='font-semibold text-xs'>Folder name</p>
 				</div>

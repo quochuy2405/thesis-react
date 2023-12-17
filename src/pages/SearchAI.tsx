@@ -167,6 +167,7 @@ const Page = () => {
 
 	useEffect(() => {
 		setData([]);
+		setLoading(false);
 		if (searchType !== "face" && showGraph) {
 			dispatch(closeGraphEdges());
 		}
@@ -188,6 +189,7 @@ const Page = () => {
 					}, 1200);
 				});
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchType]);
 	return (
 		<div className='flex flex-col h-full w-full'>

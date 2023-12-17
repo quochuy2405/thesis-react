@@ -2,6 +2,7 @@ import { setDirectoriesCurrent, setDirectoriesTree } from "@/redux/features/dire
 import { openMove } from "@/redux/features/onmove";
 import { RootState } from "@/redux/store";
 import { Dropdown, MenuProps } from "antd";
+import clsx from "clsx";
 import moment from "moment";
 import React from "react";
 import { AiFillDelete, AiOutlineMore } from "react-icons/ai";
@@ -16,6 +17,7 @@ interface DirectoryRowProps {
 	name: string;
 	onClick: () => void;
 	isFolder: boolean;
+	disabled: boolean;
 }
 const IconByType: Record<string, React.ReactNode> = {
 	img: <BsImage size={20} color='#00DFA2' />,
@@ -30,7 +32,12 @@ const typeDefine: Record<string, string> = {
 	mp4: "video",
 	txt: "doc",
 };
-const DirectoryRow: React.FC<DirectoryRowProps> = ({ name, isFolder, onClick }) => {
+const DirectoryRow: React.FC<DirectoryRowProps> = ({
+	name,
+	isFolder,
+	disabled = false,
+	onClick,
+}) => {
 	const lastFile = name.slice(-3).toLocaleLowerCase() as keyof typeof typeDefine;
 	const directory = useSelector((state: RootState) => state.directory.currentPath);
 	const directoriesTree = useSelector((state: RootState) => state.directory.directoriesTree);
@@ -68,7 +75,12 @@ const DirectoryRow: React.FC<DirectoryRowProps> = ({ name, isFolder, onClick }) 
 	};
 	return (
 		<div
-			className='flex transition-opacity h-[40px] min-h-[40px] w-full bg-neutral-50/30 hover:bg-neutral-100 items-center px-4 rounded-md cursor-pointer gap-2 '
+			className={clsx(
+				"flex transition-opacity h-[40px] min-h-[40px] w-full bg-neutral-50/30 hover:bg-neutral-100 items-center px-4 rounded-md cursor-pointer gap-2",
+				{
+					"opacity-60 cursor-not-allowed": disabled,
+				}
+			)}
 			onClick={onClick}>
 			{isFolder && <FcFolder size={20} />}
 			{!isFolder && IconByType[typeDefine[lastFile]]}

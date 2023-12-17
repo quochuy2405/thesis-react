@@ -5,7 +5,7 @@ import moment from "moment";
 import { BiSolidVideos } from "react-icons/bi";
 import { BsFolder, BsImage } from "react-icons/bs";
 import { HiDocumentText } from "react-icons/hi2";
-import { MdRestore } from "react-icons/md";
+import { MdDelete, MdRestore } from "react-icons/md";
 const IconByType = {
 	img: <BsImage size={18} />,
 	doc: <HiDocumentText size={20} />,
@@ -208,24 +208,22 @@ const TableFolder = () => {
 			className: "text-xs",
 			render: (text: string, record: any) => {
 				return (
-					<div className="flex items-center gap-2 cursor-pointer">
-						<span
-							className={`${[
-								IconColor[record.type as keyof typeof IconColor],
-							]}`}>
+					<div className='flex items-center gap-2 cursor-pointer'>
+						<span className={`${[IconColor[record.type as keyof typeof IconColor]]}`}>
 							{IconByType[record.type as keyof typeof IconByType]}
 						</span>
-						<p className="font-normal text-xs">{text}</p>
+						<p className='font-normal text-xs'>{text}</p>
 					</div>
 				);
 			},
 		},
 		{
 			title: "Size",
+			width: "80px",
 			dataIndex: "size",
 			key: "size",
 			className: "text-xs",
-			render: (text: string) => <p className="font-normal text-xs">{text}</p>,
+			render: (text: string) => <p className='font-normal text-xs'>{text}</p>,
 		},
 
 		{
@@ -234,29 +232,39 @@ const TableFolder = () => {
 			key: "modified",
 			className: "text-xs",
 			render: (text: string) => (
-				<p className="font-normal text-xs">
-					{moment(text).format("MMMM, DD YYYY")}
-				</p>
+				<p className='font-normal text-xs'>{moment(text).format("MMMM, DD YYYY")}</p>
 			),
 		},
 		{
 			title: "Restore",
 			dataIndex: "",
 			key: "",
+			width: "140px",
 			className: "text-xs",
 			render: () => (
 				<Button
 					icon={<MdRestore size={16} />}
-					className="font-normal items-center flex justify-center text-xs">
+					className='font-normal items-center flex justify-center text-xs'>
 					Restore
+				</Button>
+			),
+		},
+		{
+			title: "Delete",
+			dataIndex: "",
+			key: "",
+			className: "text-xs",
+			render: () => (
+				<Button
+					icon={<MdDelete size={16} />}
+					className='font-normal items-center flex justify-center text-xs border-red-500 text-red-500'>
+					Forever
 				</Button>
 			),
 		},
 	];
 
-	return (
-		<Table dataSource={dataSource} scroll={{ y: 560 }} columns={columns} />
-	);
+	return <Table dataSource={dataSource} scroll={{ y: 560 }} columns={columns} />;
 };
 
 export default TableFolder;
